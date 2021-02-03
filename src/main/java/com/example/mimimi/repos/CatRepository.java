@@ -8,4 +8,6 @@ import java.util.List;
 public interface CatRepository extends CrudRepository<Cat, Long> {
     List<Cat> findByTag(String filter);
 //    List<Cat> findAnyByTag(String tag);
+
+//    List<Cat> deleteByName(String name);
 }

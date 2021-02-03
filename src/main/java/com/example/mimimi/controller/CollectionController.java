@@ -44,7 +44,7 @@ public class CollectionController {
     public String create(@RequestParam String tag, Model model) {
         List<Cat> cats = catRepository.findByTag(tag);
         model.addAttribute("cats", cats);
-        model.addAttribute("tag", tag);
+//        model.addAttribute("tag", tag);
         System.out.println(tag);
         return "redirect:/collection/" + tag;
 
@@ -54,7 +54,7 @@ public class CollectionController {
     public String createC(@PathVariable String tag, Model model) {
         List<Cat> cats = catRepository.findByTag(tag);
         model.addAttribute("cats", cats);
-        model.addAttribute("tag", tag);
+//        model.addAttribute("tag", tag);
         return "collectionEdit";
     }
 
@@ -73,6 +73,12 @@ public class CollectionController {
         model.addAttribute("cats", cats);
         model.addAttribute("tag", tag);
         return "collectionEdit";
+    }
+
+    @PostMapping("collection/{tag}/delete")
+    public void String (@PathVariable String tag, @RequestParam(value = "cat") Cat cat) {
+//        catRepository.f
+        catRepository.delete(cat);
     }
 
 }
