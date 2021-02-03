@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Мимимиметр</title>
+</head>
+<body>
+<h3 th:text="'Редактирование пользователя ' + ${user.username} + ':'"></h3>
+<form method="post" th:action="user">
+    <div>
+        Имя пользователя:
+    </div>
+    <div>
+        <input type="text" name="username" th:value="${user.username}">
+    </div>
+    Роли:
+    <div th:each="role : ${roles}">
+        <input type="checkbox" th:name="${role}" th:checked="${user.roles.contains(role)}">
+        <label th:text="${role}"></label>
+    </div>
+    <input type="hidden" name="userId" th:value="${user.id}">
+    <button type="submit">Сохранить</button>
+    <a href="/main">Вернуться на главную страницу</a>
+</form>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Выход"/>
+</form>
+</body>
+</html>

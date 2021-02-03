@@ -1,0 +1,9 @@
+/*------------------------- Layout styles ------------------------*/
+body{
+    background-color: #19a5c8;
+    height:auto;
+    width:auto;
+    margin:0 auto;
+    font-family: arial,sans-serif;
+    color: #f5f6f6;
+}

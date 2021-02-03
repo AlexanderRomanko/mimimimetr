@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Мимимиметр</title>
+</head>
+<body>
+<h1>Добро пожаловть на наш сайт!</h1>
+<h3>Здесь вы можете проголосовать за понравившиеся фотографии и увидеть наиболее популярные у других пользователей,
+    а также создать свою собственную коллекцию для голосования.</h3>
+<div><input type="submit" value="Продолжить" onclick="window.location.href='main'"></div>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Выход"/>
+</form>
+</body>
+</html>

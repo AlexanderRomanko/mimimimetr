@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Мимимиметр</title>
+<!--    <link rel="stylesheet" href="/static/style.css">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+</head>
+<body>
+<h3>Пожалуйста, войдите или зарегистрируйтесь, чтобы продолжить.</h3>
+<div th:if="${param.error}">
+    Неверное имя пользователя и/или пароль.
+</div>
+<div th:if="${param.logout}">
+    Вы вышли из учетной записи.
+</div>
+<form th:action="@{/login}" method="post">
+    <div><label> Имя пользователя: <input type="text" name="username"/> </label></div>
+    <div><label> Пароль: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Войти" onclick="window.location.href='main'"/></div>
+    <div><input type="button" value="Зарегистрироваться" onclick="window.location.href='registration'"></div>
+</form>
+</body>
+</html>

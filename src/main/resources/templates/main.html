@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Мимимиметр</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h3 th:text="'Добро пожаловать, ' + ${#httpServletRequest.remoteUser} + '. Теперь Вы можете проголосовать, либо создать свою собственную коллекцию.'"></h3>
+    <div><input type="submit" value="Проголосовать" onclick="window.location.href='vote'"></div>
+    <div><input type="submit" value="Создать свою коллекцию для голосования" onclick="window.location.href='collection'"></div>
+    <div sec:authorize="hasAuthority('ADMIN')">
+        <a href="user">Список пользователей</a>
+    </div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Выход"/>
+    </form>
+</body>
+</html>

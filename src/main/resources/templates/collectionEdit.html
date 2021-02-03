@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Мимимиметр</title>
+</head>
+<body>
+<h3 th:text="'Коллекция &quot;' + ${tag} + '&quot;.'"></h3>
+<span th:if="${#lists.isEmpty(cats)}">Коллекция пуста.</span>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Выход"/>
+</form>
+<a href="/main">Вернуться на главную страницу</a>
+<form method="post" th:action="@{/collection/} + ${tag}"  enctype="multipart/form-data">
+    <p>
+        <input type="text" th:name="tag" th:value="${tag}">
+        <input type="text" name="name" required placeholder="Введите имя котика">
+        <input type="file" name="file" required placeholder="Выберите файл">
+        <span th:if="${error}">
+            <div th:text="${error}"></div>
+        </span>
+    </p>
+    <button type="submit">Добавить</button>
+</form>
+
+<form method="get" enctype="multipart/form-data">
+<tr th:each="cat : ${cats}">
+    <div class="row row-cols-1 row-cols-md-2 g-4 mt-3 p-4">
+        <div class="col">
+            <div class="card text-white bg-dark" style="max-width: 40rem;">
+                <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${cat.name}"></h5>
+                    <button type="submit">Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</tr>
+</form>
+<!--<form method="post" th:action="@{/collection/} + ${tag}">-->
+<!--    <button type="submit">Удалить</button>-->
+<!--</form>-->
+</body>
+</html>

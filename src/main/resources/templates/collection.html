@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Мимимиметр</title>
+</head>
+<body>
+<h3>Создание собственной коллекции для голосования.</h3>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Выход"/>
+</form>
+<a href="/main">Вернуться на главную страницу</a>
+<form method="post" th:action="@{/collection/}">
+    <input type="text" th:name="tag"  placeholder="Введите название коллекции" required>
+    <input type="submit" value="Продолжить">
+    <span th:if="${error}">
+        <p th:text="${error}"></p>
+    </span>
+</form>
+</body>
+</html>

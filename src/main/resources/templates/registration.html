@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Мимимиметр</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h3>Создание учетной записи.</h3>
+<div th:if="${message != null}">
+    <span th:text="${message}"></span>
+</div>
+<div th:if="${param.error}">
+    Неверное имя пользователя и/или пароль.
+</div>
+<form th:action="@{/registration}" method="post">
+    <div><label> Имя пользователя: <input type="text" name="username" /> </label></div>
+    <div><label> Пароль: <input type="password" name="password" /> </label></div>
+    <div><input type="submit" value="Зарегистрироваться"/></div>
+</form>
+</body>
+</html>
