@@ -15,15 +15,13 @@
         <input type="submit" value="Выход"/>
     </form>
     <a href="/main">Вернуться на главную страницу</a>
-    <form method="post" th:action="@{/collection/} + ${tag}"  enctype="multipart/form-data">
-        <p>
-            <input type="hidden" th:name="tag" th:value="${tag}">
-            <input type="text" name="name" required placeholder="Введите имя котика">
-            <input type="file" name="file" required placeholder="Выберите файл">
-            <span th:if="${error}">
-            <div th:text="${error}"></div>
+    <form method="post" th:action="@{/collection/} + ${tag}" enctype="multipart/form-data">
+        <input type="hidden" th:name="tag" th:value="${tag}">
+        <input type="text" name="name" th:value="${name}" required placeholder="Введите имя котика">
+        <input type="file" name="file" required placeholder="Выберите файл">
+        <span th:if="${error}">
+            <p th:text="${error}"></p>
         </span>
-        </p>
         <button type="submit">Добавить</button>
     </form>
 
@@ -33,10 +31,9 @@
                 <div class="row row-cols-1 row-cols-md-2 g-4 mt-3 p-4">
                     <div class="col">
                         <div class="card text-white bg-dark" style="max-width: 40rem;">
-                            <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>
+                            <span th:if="${cat.name}"><img th:src="'/img/' + ${tag} + '/' + ${cat.filename}" class="card-img-top" alt="..."></span>
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${cat.name}"></h5>
-                                <!--                            <button type="submit">Удалить</button>-->
                             </div>
                         </div>
                     </div>
@@ -44,9 +41,8 @@
             </form>
         </div>
         <div class="col-3">
-            <form method="post" th:action="@{/collection/} + ${tag} + '/delete'">
-                <input type="hidden" th:name="cat" th:value="${cat}">
-<!--                <input type="hidden" name="_method" value="delete">-->
+            <form th:action="'/collection/' + ${tag} + '/remove'" method="post">
+                <input type="hidden" name="catId" th:value="${cat.id}">
                 <button type="submit">Удалить</button>
             </form>
         </div>

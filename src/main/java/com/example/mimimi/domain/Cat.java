@@ -10,7 +10,7 @@ public class Cat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
-    private Integer id;
+    private Long id;
     private String name;
     private String tag;
     private String filename;
@@ -18,16 +18,17 @@ public class Cat {
     public Cat() {
     }
 
-    public Cat(String name, String tag) {
+    public Cat(String name, String tag, String filename) {
         this.name = name;
         this.tag = tag;
+        this.filename = filename;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

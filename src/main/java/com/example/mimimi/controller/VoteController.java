@@ -36,24 +36,24 @@ public class VoteController {
         return "collection";
     }
 
-    @PostMapping
-    public String addCollection(@RequestParam String tag, @RequestParam String name, @RequestParam("file") MultipartFile file,
-                                Model model) throws IOException {
-        if (tag.isEmpty() || name.isEmpty() || file == null || file.getOriginalFilename().isEmpty()) {
-            model.addAttribute("error", "Please, fill out all the fields and choose a file!");
-        } else {
-            Cat cat = new Cat(name, tag);
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) uploadDir.mkdir();
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file.getOriginalFilename();
-            file.transferTo(new File(uploadPath + "/" + resultFileName));
-            cat.setFilename(resultFileName);
-            catRepository.save(cat);
-        }
-        Iterable<Cat> cats = catRepository.findAll();
-        model.addAttribute("cats", cats);
-        return "collection";
-    }
+//    @PostMapping
+//    public String addCollection(@RequestParam String tag, @RequestParam String name, @RequestParam("file") MultipartFile file,
+//                                Model model) throws IOException {
+//        if (tag.isEmpty() || name.isEmpty() || file == null || file.getOriginalFilename().isEmpty()) {
+//            model.addAttribute("error", "Please, fill out all the fields and choose a file!");
+//        } else {
+//            Cat cat = new Cat(name, tag);
+//            File uploadDir = new File(uploadPath);
+//            if (!uploadDir.exists()) uploadDir.mkdir();
+//            String uuidFile = UUID.randomUUID().toString();
+//            String resultFileName = uuidFile + "." + file.getOriginalFilename();
+//            file.transferTo(new File(uploadPath + "/" + resultFileName));
+//            cat.setFilename(resultFileName);
+//            catRepository.save(cat);
+//        }
+//        Iterable<Cat> cats = catRepository.findAll();
+//        model.addAttribute("cats", cats);
+//        return "collection";
+//    }
 
 }

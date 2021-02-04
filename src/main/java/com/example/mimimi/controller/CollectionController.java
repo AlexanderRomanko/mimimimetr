@@ -2,23 +2,19 @@ package com.example.mimimi.controller;
 
 import com.example.mimimi.domain.Cat;
 import com.example.mimimi.repos.CatRepository;
-import org.apache.catalina.filters.ExpiresFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
-//@RequestMapping("collection")
+@RequestMapping("collection")
 public class CollectionController {
 
     @Value("${upload.path}")
@@ -27,47 +23,48 @@ public class CollectionController {
     @Autowired
     private CatRepository catRepository;
 
-    @GetMapping("collection")
-    public String index(@RequestParam(required = false, defaultValue = "") String tag, Model model) {
+    @GetMapping
+    public String index(@RequestParam(required = false, defaultValue = "") String tag) {
+        if (tag.isEmpty()) return "collection";
+        return "collectionEdit";
+    }
+
+    @PostMapping
+    public String indexCollection(@RequestParam String tag, Model model) {
         if (tag.isEmpty()) return "collection";
         List<Cat> cats = catRepository.findByTag(tag);
         if (!cats.isEmpty()) {
             model.addAttribute("error", "Такая коллекция уже существует, выберите другое название.");
             return "collection";
         }
-        model.addAttribute("tag", tag);
         model.addAttribute("cats", cats);
-        return "collectionEdit";
-    }
-
-    @PostMapping("collection")
-    public String create(@RequestParam String tag, Model model) {
-        List<Cat> cats = catRepository.findByTag(tag);
-        model.addAttribute("cats", cats);
-//        model.addAttribute("tag", tag);
-        System.out.println(tag);
         return "redirect:/collection/" + tag;
 
     }
 
-    @GetMapping("collection/{tag}")
-    public String createC(@PathVariable String tag, Model model) {
+    @GetMapping("{tag}")
+    public String createCollection(@PathVariable String tag, Model model) {
         List<Cat> cats = catRepository.findByTag(tag);
         model.addAttribute("cats", cats);
-//        model.addAttribute("tag", tag);
         return "collectionEdit";
     }
 
-    @PostMapping("collection/{tag}")
-    public String edit(@RequestParam String name, @RequestParam("file") MultipartFile file,
-                       Model model, @RequestParam String tag) throws IOException {
-        Cat cat = new Cat(name, tag);
-        File uploadDir = new File(uploadPath);
+    @PostMapping("{tag}")
+    public String editCollection(@RequestParam String name, @RequestParam("file") MultipartFile file,
+                       Model model, @PathVariable String tag) throws IOException {
+        File uploadDir = new File(uploadPath + "/" + tag);
         if (!uploadDir.exists()) uploadDir.mkdir();
-        String uuidFile = UUID.randomUUID().toString();
-        String resultFileName = uuidFile + "." + file.getOriginalFilename();
-        file.transferTo(new File(uploadPath + "/" + resultFileName));
-        cat.setFilename(resultFileName);
+        String filename = file.getOriginalFilename();
+        if(new File(uploadPath + "/" + tag + "/" + filename).isFile()) {
+            List<Cat> cats = catRepository.findByTag(tag);
+            model.addAttribute("cats", cats);
+            model.addAttribute("error", "Такой кот уже есть в коллекции, выберите другой файл.");
+            model.addAttribute("name", name);
+            model.addAttribute("tag", tag);
+            return "collectionEdit";
+        }
+        file.transferTo(new File(uploadPath + "/" + tag + "/" + filename));
+        Cat cat = new Cat(name, tag, filename);
         catRepository.save(cat);
         List<Cat> cats = catRepository.findByTag(tag);
         model.addAttribute("cats", cats);
@@ -75,10 +72,14 @@ public class CollectionController {
         return "collectionEdit";
     }
 
-    @PostMapping("collection/{tag}/delete")
-    public void String (@PathVariable String tag, @RequestParam(value = "cat") Cat cat) {
-//        catRepository.f
+    @PostMapping("{tag}/remove")
+    public String deleteCat(@PathVariable String tag, @RequestParam("catId") Cat cat) {
         catRepository.delete(cat);
+        File file = new File(uploadPath + "/" + tag + "/" + cat.getFilename());
+        file.delete();
+        File uploadDir = new File(uploadPath + "/" + tag);
+        if (uploadDir.list().length == 0) uploadDir.delete();
+        return "redirect:/collection/" + tag;
     }
 
 }
