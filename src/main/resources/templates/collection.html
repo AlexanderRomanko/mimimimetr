@@ -10,7 +10,7 @@
     <input type="submit" value="Выход"/>
 </form>
 <a href="/main">Вернуться на главную страницу</a>
-<form method="post" th:action="@{/collection/}">
+<form method="post" th:action="'/collection/'">
     <input type="text" th:name="tag"  placeholder="Введите название коллекции" required>
     <input type="submit" value="Продолжить">
     <span th:if="${error}">

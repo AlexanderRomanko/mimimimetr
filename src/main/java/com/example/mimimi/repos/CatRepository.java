@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CatRepository extends CrudRepository<Cat, Long> {
     List<Cat> findByTag(String filter);
-    Cat findByFilename(String filename);
+    Cat (String filename);
 }
