@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Мимимиметр</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--    <link rel="stylesheet" href="/static/style.css">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<!-- Separate Popper and Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+<style>
+    body { background-color:#19a5c8; color: #FFB919; }
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">Mimimimetr</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Vote</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">User list</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 th:inline="text">Hello, [[${#httpServletRequest.remoteUser}]]!</h1>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Выход"/>
+    </form>
+    <a href="/main">Вернуться на главную страницу</a>
+    <br>
+    <form method="post" th:action="main" enctype="multipart/form-data">
+        <p>
+            <input type="text" name="tag" required placeholder="Введите наазвание коллекции">
+            <input type="text" name="name" required placeholder="Введите имя котика">
+            <input type="file" name="file" required placeholder="Выберите файл">
+            <span th:if="${error}">
+                <p th:text="${error}"></p>
+            </span>
+        </p>
+        <button type="submit">Добавить</button>
+    </form>
+    <h1 align="center">Мимимиметр</h1>
+    <h3 align="center">Кто из них мимимишее? Кликни по фотографии!</h3>
+    <br>
+    <form method="get" th:action="main">
+        <input type="text" name="filter" th:value="${filter}">
+        <button type="submit">Найти</button>
+        <tr th:each="cat : ${cats}">
+            <div class="row row-cols-1 row-cols-md-2 g-4 mt-3 p-4">
+                <div class="col">
+                    <div class="card text-white bg-dark" style="max-width: 40rem;">
+                        <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${cat.name}"></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-white bg-dark" style="max-width: 40rem;">
+                        <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${cat.name}"></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tr>
+        <span th:if="${#lists.isEmpty(cats)}">No images</span>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mimimimetr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div th:insert="~{parts/parts :: navbar} "></div>
+<div class="d-flex" id="vote">
+    <div class="container text-center my-4">
+        <br>
+        <h2 style="color: white">Collections List.</h2>
+        <br>
+        <div class="row justify-content-center">
+            <form method="get" th:action="chooseCollection">
+                <div th:each="field : ${collectionsList}" class="col">
+                    <div class="col-5 m-3">
+                        <div class="card shadow-sm">
+<!--                            <span th:if="${field}"><img th:src="@{/img/} + ${field} + '/' + ${}" alt="..."></span>-->
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" focusable="false">.
+                                <rect width="100%" height="100%" fill="#55595c"></rect>
+                            </svg>
+                            <div class="card-body">
+                                <h2 th:text="${field}">Collection</h2>
+<!--                                <button type="submit" class="btn btn-secondary" th:value="${field}">Collection</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container text-center mt-5">
+    <h2>Choose collection to vote.</h2>
+    <br>
+    <h3>Here you can vote for your favorite photos and see the most popular ones from other users, as well as create your own collection for voting.</h3>
+</div>
+<!--    <form method="get" th:action="vote">-->
+<!--                <div th:each="cat : ${cats}" class="col">-->
+<!--                    <div class="card text-white bg-dark" style="max-width: 40rem;">-->
+<!--                        <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>-->
+<!--                        <div class="card-body">-->
+<!--                            <h5 class="card-title" th:text="${cat.name}"></h5>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col">-->
+<!--                    <div class="card text-white bg-dark" style="max-width: 40rem;">-->
+<!--&lt;!&ndash;                        <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div class="card-body">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <h5 class="card-title" th:text="${cat.name}"></h5>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </tr>-->
+<!--    </form>-->
+<!--</div>-->
+</body>
+</html>
