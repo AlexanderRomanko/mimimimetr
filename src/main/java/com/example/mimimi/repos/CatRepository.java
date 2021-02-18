@@ -16,7 +16,7 @@ public interface CatRepository extends JpaRepository<Cat, Long> {
 //    @Query(value = "select distinct(tag) from cat", nativeQuery = true)
 //    List<String> findAllTags();
     @Query(value = "SELECT tag, filename FROM cat WHERE id NOT IN (SELECT d2.id FROM cat AS d1 INNER JOIN cat AS d2 ON d2.tag=d1.tag WHERE d2.id > d1.id)", nativeQuery = true)
-    Map<String, String> findAllTags();
+    List<String> findAllTags();
 
 
 

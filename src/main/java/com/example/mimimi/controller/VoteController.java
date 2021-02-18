@@ -28,7 +28,7 @@ public class VoteController {
     @GetMapping("/chooseCollection")
     public String showCollectionsList(Model model) {
 //        File root = new File(uploadPath);
-        Map<String, String> collectionList = catRepository.findAllTags();
+        List<String> collectionList = catRepository.findAllTags();
         model.addAttribute("collectionsList", collectionList);
         System.out.println(collectionList);
         return "chooseVoteCollection";
