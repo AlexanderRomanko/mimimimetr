@@ -1,9 +1,85 @@
-/*------------------------- Layout styles ------------------------*/
-body{
-    background-color: #19a5c8;
-    height:auto;
-    width:auto;
-    margin:0 auto;
-    font-family: arial,sans-serif;
-    color: #f5f6f6;
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Baloo Thambi 2", sans-serif;
 }
+#index {
+    width: 100%;
+    height: 50vh;
+    background: linear-gradient(rgba(33, 37, 41, 0.7), rgba(33, 37, 41, 0.7)),
+    url("https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2021/01/asian-woman-hugging-dog.jpg") center center;
+    /*background: linear-gradient(rgba(0, 48, 73, 0.7), rgba(0, 48, 73, 0.7)), url("https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2021/01/asian-woman-hugging-dog.jpg") center center;*/
+    /*top: -20vh;*/
+    background-size: cover;
+    position: relative;
+}
+#main {
+    width: 100%;
+    height: 50vh;
+    background: linear-gradient(rgba(33, 37, 41, 0.7), rgba(33, 37, 41, 0.7)),
+    url("https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2021/01/baby-cat-held-by-a-woman-.jpg") top -300px right no-repeat;
+    background-size: cover;
+    position: center;
+}
+#vote {
+    width: 100%;
+    height: 50vh;
+    /*height: 92.8vh;*/
+    background: linear-gradient(rgba(33, 37, 41, 0.7), rgba(33, 37, 41, 0.7)),
+    url("https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2020/12/cats-768x512.jpg") top -300px right no-repeat;
+    background-size: cover;
+    position: center;
+}
+#collection {
+    width: 100%;
+    height: 50vh;
+    /*height: 92.8vh;*/
+    background: linear-gradient(rgba(33, 37, 41, 0.7), rgba(33, 37, 41, 0.7)),
+    url("https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2020/12/happy-irish-setter-dogs-768x515.jpg") top -300px right no-repeat;
+    background-size: cover;
+    position: center;
+}
+#userlist {
+    width: 100%;
+    height: 50vh;
+    /*height: 92.8vh;*/
+    background: linear-gradient(rgba(33, 37, 41, 0.7), rgba(33, 37, 41, 0.7)),
+    url("https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2020/12/smiling-couple-palming-labrador-dog-at-animals-shelter-and-choosing-for-adoption-768x513.jpg") top -300px right no-repeat;
+    background-size: cover;
+    position: center;
+}
+h1 {
+    font-size: 104px;
+    font-weight: 600;
+    color: #fff;
+}
+h2 {
+    color: #D62828;
+    font-size: 64px;
+}
+h3 {
+    color: #6c757d;
+    /*color: #003049;*/
+    font-size: 33px;
+}
+.btn {
+    /*    background-color: #003049;*/
+    /*    color: white;*/
+    padding: 12px 24px;
+    /*    text-align: center;*/
+    font-size: 18px;
+    border-radius: 30px;
+}
+.form-control {
+    padding: 12px 24px;
+    border-radius: 30px;
+}
+input {
+    text-align: center;
+}
+.navbar {
+    height: 78px;
+}
+/*.collapse.navbar-collapse {*/
+/*    width: 500px;*/
+/*}*/

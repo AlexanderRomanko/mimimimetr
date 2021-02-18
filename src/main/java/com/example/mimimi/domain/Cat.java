@@ -14,14 +14,16 @@ public class Cat {
     private String name;
     private String tag;
     private String filename;
+    private boolean voted;
 
     public Cat() {
     }
 
-    public Cat(String name, String tag, String filename) {
+    public Cat(String name, String tag, String filename, boolean voted) {
         this.name = name;
         this.tag = tag;
         this.filename = filename;
+        this.voted = voted;
     }
 
     public Long getId() {
@@ -56,4 +58,11 @@ public class Cat {
         this.filename = filename;
     }
 
+    public boolean isVoted() {
+        return voted;
+    }
+
+    public void setVoted(boolean voted) {
+        this.voted = voted;
+    }
 }

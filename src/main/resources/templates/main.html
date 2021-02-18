@@ -1,18 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Мимимиметр</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mimimimetr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h3 th:text="'Добро пожаловать, ' + ${#httpServletRequest.remoteUser} + '. Теперь Вы можете проголосовать, либо создать свою собственную коллекцию.'"></h3>
-    <div><input type="submit" value="Проголосовать" onclick="window.location.href='vote'"></div>
-    <div><input type="submit" value="Создать свою коллекцию для голосования" onclick="window.location.href='collection'"></div>
-    <div sec:authorize="hasAuthority('ADMIN')">
-        <a href="user">Список пользователей</a>
+    <div th:insert="~{parts/parts :: navbar} "></div>
+    <div class="d-flex align-items-center" id="main">
+        <div class="container text-center mt-4">
+            <img src="https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2021/01/petlogoelementor.png" style="opacity: 80%" alt="...">
+            <div class="row justify-content-center mt-2">
+                <h1>Mimimimetr</h1>
+            </div>
+        </div>
     </div>
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Выход"/>
-    </form>
+    <br>
+    <div class="container text-center mt-5">
+        <h2 th:text="'Welcome ' + ${#httpServletRequest.remoteUser} + '.'">Welcome!</h2>
+        <br>
+        <h3>Now you can vote and create your own collection.</h3>
+    </div>
 </body>
 </html>

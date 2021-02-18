@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,23 +8,21 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<div th:insert="~{parts/parts :: navbar} "></div>
-<div class="d-flex" id="collection">
-<form method="post" th:action="'/collection/'">
-    <label>
-        <input type="text" th:name="tag"  placeholder="Введите название коллекции" required>
-    </label>
-    <input type="submit" value="Продолжить">
-    <span th:if="${error}">
-        <p th:text="${error}"></p>
-    </span>
-</form>
+<nav class="navbar navbar-expand-lg bg-light"></nav>
+<div class="d-flex align-items-center" id="index">
+    <div class="container text-center mt-4">
+        <img src="https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2021/01/petlogoelementor.png" style="opacity: 80%" alt="...">
+        <div class="row justify-content-center mt-2">
+            <h1>Mimimimetr</h1>
+        </div>
+    </div>
 </div>
 <br>
 <div class="container text-center mt-5">
-    <h2>Create your collection.</h2>
+    <h2>Welcome!</h2>
     <br>
     <h3>Here you can vote for your favorite photos and see the most popular ones from other users, as well as create your own collection for voting.</h3>
+    <a href="/main" class="btn btn-danger mt-5">Continue</a>
 </div>
 </body>
 </html>

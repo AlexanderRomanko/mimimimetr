@@ -24,13 +24,13 @@ public class RegistrationController {
     @PostMapping("registration")
     public String addUser(User user, Model model) {
         if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
-            model.addAttribute("message", "Пожалуйста, заполните все поля");
+            model.addAttribute("message", "Please fill out all fields!");
             return "registration";
         }
         else {
             User userFromDb = userRepository.findByUsername(user.getUsername());
             if (userFromDb != null) {
-                model.addAttribute("message", "Пользователь " + user.getUsername() + " уже существует!");
+                model.addAttribute("message", "User " + user.getUsername() + " already exists!");
                 return "registration";
             }
             user.setActive(true);

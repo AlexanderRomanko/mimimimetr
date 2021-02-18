@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Мимимиметр</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mimimimetr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+<div th:insert="~{parts/parts :: navbar} "></div>
+<div class="d-flex" id="userlist">
 <h3>Список пользователей:</h3>
 <form method="get" th:action="user">
     <table>
@@ -25,9 +30,12 @@
         </tbody>
     </table>
 </form>
-<a href="/main">Вернуться на главную страницу</a>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Выход"/>
-</form>
+</div>
+<br>
+<div class="container text-center mt-5">
+    <h2>User list.</h2>
+    <br>
+    <h3>Here you can vote for your favorite photos and see the most popular ones from other users, as well as create your own collection for voting.</h3>
+</div>
 </body>
 </html>
