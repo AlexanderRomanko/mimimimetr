@@ -14,31 +14,27 @@
         <br>
         <h2 style="color: white">Which one do you like better?</h2>
         <br>
-        <div class="row justify-content-center">
-            <div class="col-5 m-3">
-                <div class="card shadow-sm">
-                    <img src="https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2020/12/domestic-life-with-cat.jpg" alt="...">
-                    <!--                <img th:src="@{/img/} + ${cat.filename}" class="bd-placeholder-img card-img-top" width="100%" height="225" alt="...">-->
-                    <!--            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" focusable="false">.-->
-                    <!--                <rect width="100%" height="100%" fill="#55595c"></rect>-->
-                    <!--            </svg>-->
-                    <div class="card-body">
-                        <button type="submit" class="btn btn-secondary">First cat name</button>
-                        <!--                    <button type="submit" class="btn btn-sm btn-outline-secondary" th:value="${cat.name}">First cat name</button>-->
+        <form method="post" th:action="'/vote/' + ${cat1.tag}">
+            <div class="row justify-content-center">
+                <div class="col-5 m-3">
+                    <div class="card shadow-sm">
+                        <img th:src="@{/img/} + ${cat1.tag} + '/' + ${cat1.filename}" class="d-block" alt="...">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-secondary" th:value="${cat1.name}">First cat name</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 m-3">
+                    <div class="card shadow-sm">
+                        <img th:src="@{/img/} + ${cat2.tag} + '/' + ${cat2.filename}" class="d-block" alt="...">
+                        <div class="card-body">
+                            <button type="submit" class="btn btn-secondary" th:value="${cat2.name}">Second cat name</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-5 m-3">
-                <div class="card shadow-sm">
-                    <img src="https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2021/01/nominated--768x512.jpg" class="bd-placeholder-img card-img-top" width="100%" height="100%" alt="...">
-                    <!--                <img th:src="@{/img/} + ${cat.filename}" class="bd-placeholder-img card-img-top" width="100%" height="225" alt="...">-->
-                    <div class="card-body">
-                        <button type="submit" class="btn btn-secondary">Second cat name</button>
-                        <!--                    <button type="submit" class="btn btn-sm btn-outline-secondary" th:value="${cat.name}">Second cat name</button>-->
-                    </div>
-                </div>
-            </div>
-        </div>
+            <input type="hidden" th:name="cats" th:value="${cats}">
+        </form>
     </div>
 </div>
 <br>

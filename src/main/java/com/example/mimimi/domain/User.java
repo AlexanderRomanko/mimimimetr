@@ -1,5 +1,7 @@
 package com.example.mimimi.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -21,6 +23,10 @@ public class User {
     public boolean isAdmin() {
         return roles.contains(Role.ADMIN);
     }
+
+//    @ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+//    @JsonBackReference
+//    private Cat cat;
 
     public Long getId() {
         return id;

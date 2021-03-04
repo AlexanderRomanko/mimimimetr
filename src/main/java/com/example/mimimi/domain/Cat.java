@@ -1,9 +1,10 @@
 package com.example.mimimi.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Cat {
@@ -14,16 +15,22 @@ public class Cat {
     private String name;
     private String tag;
     private String filename;
-    private boolean voted;
+    private int likes;
+
+//    @OneToMany(mappedBy = "votedUsers", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
+//    private Set<User> votedUsers;
 
     public Cat() {
     }
 
-    public Cat(String name, String tag, String filename, boolean voted) {
+    public Cat(Long id, String name, String tag, String filename, int likes, Set<User> votedUsers) {
+        this.id = id;
         this.name = name;
         this.tag = tag;
         this.filename = filename;
-        this.voted = voted;
+        this.likes = likes;
+        this.votedUsers = votedUsers;
     }
 
     public Long getId() {
@@ -58,11 +65,19 @@ public class Cat {
         this.filename = filename;
     }
 
-    public boolean isVoted() {
-        return voted;
+    public int getLikes() {
+        return likes;
     }
 
-    public void setVoted(boolean voted) {
-        this.voted = voted;
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public Set<User> getVotedUsers() {
+        return votedUsers;
+    }
+
+    public void setVotedUsers(Set<User> votedUsers) {
+        this.votedUsers = votedUsers;
     }
 }

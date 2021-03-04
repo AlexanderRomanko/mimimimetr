@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mimimimetr</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -12,27 +13,41 @@
 <div class="d-flex" id="vote">
     <div class="container text-center my-4">
         <br>
-        <h2 style="color: white">Collections List.</h2>
+        <h2 style="color: white">Collections List</h2>
         <br>
-        <div class="row justify-content-center">
-            <form method="get" th:action="chooseCollection">
-                <div th:each="field : ${collectionsList}" class="col">
-                    <div class="col-5 m-3">
-                        <div class="card shadow-sm">
-                            <span th:if="${field}">
-                                <img class="img-fluid" th:src="@{/img/} + ${field.tag} + '/' + ${field.filename}" alt="..."></span>
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" focusable="false">.
-                                <rect width="100%" height="100%" fill="#55595c"></rect>
-                            </svg>
-                            <div class="card-body">
-                                <h2 th:text="${field.filename}">Collection</h2>
-<!--                                <button type="submit" class="btn btn-secondary" th:value="${field}">Collection</button>-->
-                            </div>
+        <form method="get" th:action="chooseCollection">
+            <div id="carouselControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                <div class="carousel-inner shadow">
+                    <div class="carousel-item active">
+<!--                        <div class="card text-center">-->
+                            <img th:src="@{/img/} + ${collectionsList[0].tag} + '/' + ${collectionsList[0].filename}" class="d-block" alt="...">
+<!--                        </div>-->
+                        <div class="carousel-caption">
+                            <a th:href="'/vote/' + ${collectionsList[0].tag}" class="btn btn-danger stretched-link" th:text="${collectionsList[0].tag}">Collection name</a>
                         </div>
                     </div>
+                    <div class="carousel-item" th:each="field : ${collectionsList}" th:if="${field != collectionsList[0]}">
+<!--                        <div class="card text-center">-->
+                            <img th:src="@{/img/} + ${field.tag} + '/' + ${field.filename}" class="d-block" alt="...">
+<!--                        </div>-->
+                        <div class="carousel-caption">
+                            <a th:href="'/vote/' + ${field.tag}" class="btn btn-danger stretched-link" th:text="${field.tag}">Collection name</a>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselControls"  data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselControls"  data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-            </form>
-        </div>
+                <!--                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" focusable="false">.-->
+                <!--                                <rect width="100%" height="100%" fill="#55595c"></rect>-->
+                <!--                            </svg>-->
+            </div>
+        </form>
     </div>
 </div>
 <br>
@@ -41,26 +56,5 @@
     <br>
     <h3>Here you can vote for your favorite photos and see the most popular ones from other users, as well as create your own collection for voting.</h3>
 </div>
-<!--    <form method="get" th:action="vote">-->
-<!--                <div th:each="cat : ${cats}" class="col">-->
-<!--                    <div class="card text-white bg-dark" style="max-width: 40rem;">-->
-<!--                        <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>-->
-<!--                        <div class="card-body">-->
-<!--                            <h5 class="card-title" th:text="${cat.name}"></h5>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="col">-->
-<!--                    <div class="card text-white bg-dark" style="max-width: 40rem;">-->
-<!--&lt;!&ndash;                        <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <div class="card-body">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <h5 class="card-title" th:text="${cat.name}"></h5>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </tr>-->
-<!--    </form>-->
-<!--</div>-->
 </body>
 </html>
