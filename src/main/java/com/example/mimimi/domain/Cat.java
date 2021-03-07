@@ -3,6 +3,7 @@ package com.example.mimimi.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -10,22 +11,28 @@ import java.util.Set;
 public class Cat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     private Long id;
+
     private String name;
     private String tag;
     private String filename;
+
+    @Column(nullable = false, columnDefinition = "int default 0")
     private int likes;
 
-//    @OneToMany(mappedBy = "votedUsers", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonManagedReference
-//    private Set<User> votedUsers;
+    @ElementCollection
+    private Set<String> votedUsers = new HashSet<>();
 
     public Cat() {
     }
 
-    public Cat(Long id, String name, String tag, String filename, int likes, Set<User> votedUsers) {
-        this.id = id;
+    public Cat(String name, String tag, String filename) {
+        this.name = name;
+        this.tag = tag;
+        this.filename = filename;
+    }
+
+    public Cat(String name, String tag, String filename, int likes, Set<String> votedUsers) {
         this.name = name;
         this.tag = tag;
         this.filename = filename;
@@ -73,11 +80,11 @@ public class Cat {
         this.likes = likes;
     }
 
-    public Set<User> getVotedUsers() {
+    public Set<String> getVotedUsers() {
         return votedUsers;
     }
 
-    public void setVotedUsers(Set<User> votedUsers) {
+    public void setVotedUsers(Set<String> votedUsers) {
         this.votedUsers = votedUsers;
     }
 }

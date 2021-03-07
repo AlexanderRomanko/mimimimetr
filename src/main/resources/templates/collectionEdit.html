@@ -12,11 +12,11 @@
 <div class="d-flex" id="vote">
     <div class="container text-center my-4">
         <br>
-        <h2 style="color: white" th:text="'Collection &quot ' + ${tag} + '&quot.'">Collection Name.</h2>
+        <h2 style="color: white" th:text="'Collection &quot' + ${tag} + '&quot.'">Collection Name.</h2>
         <br>
-        <h3 th:if="${#lists.isEmpty(cats)}">Collection is empty.</h3>
+        <h3 th:if="${#maps.isEmpty(cats)}">Collection is empty.</h3>
         <form method="post" th:action="'/collection/' + ${tag}" enctype="multipart/form-data">
-            <input type="hidden" th:name="tag" th:value="${tag}">
+<!--            <input type="hidden" th:name="tag" th:value="${tag}">-->
             <label>
                 <input type="text" class="form-control" name="name" th:value="${name}" placeholder="Enter name" required>
             </label>
@@ -25,37 +25,25 @@
             <input type="submit" class="btn btn-danger" value="Add">
         </form>
 
+        <form th:action="'/collection/' + ${tag} + '/save'" method="post">
+            <h3 th:if="${redirectError}" th:text="${redirectError}"></h3>
+<!--            <input type="hidden" name="catKey" th:value="${cats}">-->
+            <button class="btn btn-primary" type="submit">Save</button>
+        </form>
+
         <div class="row" th:each="cat : ${cats}">
             <div class="col-9">
                 <div class="card col-4">
-                    <img th:src="'/img/' + ${tag} + '/' + ${cat.filename}" class="card-img-top" alt="...">
+                    <img th:src="'/img/' + ${tag} + '/' + ${cat.key}" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${cat.name}">Name</h5>
+                        <h5 class="card-title" th:text="${cat.value}">Name</h5>
                         <form th:action="'/collection/' + ${tag} + '/remove'" method="post">
-                            <input type="hidden" name="catId" th:value="${cat.id}">
-                            <button class="btn btn-primary" type="submit">Удалить</button>
+                            <input type="hidden" name="catKey" th:value="${cat.key}">
+                            <button class="btn btn-primary" type="submit">Delete</button>
                         </form>
                     </div>
                 </div>
-                <!--
-                                <div class="row row-cols-1 row-cols-md-2 g-4 mt-3 p-4">-->
-                <!--                    <div class="col">-->
-                <!--                        <div class="card text-white bg-dark" style="max-width: 40rem;">-->
-                <!--                            <span th:if="${cat.name}"><img th:src="'/img/' + ${tag} + '/' + ${cat.filename}" class="card-img-top" alt="..."></span>-->
-                <!--                            <div class="card-body">-->
-                <!--                                <h5 class="card-title" th:text="${cat.name}"></h5>-->
-                <!--                            </div>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
-                <!--            </form>-->
             </div>
-            <!--        <div class="col-3">-->
-            <!--            <form th:action="'/collection/' + ${tag} + '/remove'" method="post">-->
-            <!--                <input type="hidden" name="catId" th:value="${cat.id}">-->
-            <!--                <button type="submit">Удалить</button>-->
-            <!--            </form>-->
-            <!--        </div>-->
         </div>
     </div>
 </div>

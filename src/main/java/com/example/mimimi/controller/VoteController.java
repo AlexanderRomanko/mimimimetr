@@ -1,18 +1,16 @@
 package com.example.mimimi.controller;
 
 import com.example.mimimi.domain.Cat;
-import com.example.mimimi.domain.MimimiCollections;
 import com.example.mimimi.repos.CatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("vote")
@@ -34,21 +32,29 @@ public class VoteController {
 
     @GetMapping("/{tag}")
     public String vote(@PathVariable String tag, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object pricipal = auth.getPrincipal();
         List<Cat> cats = catRepository.findByTag(tag);
-        Random random = new Random();
-        List<Cat> twoCats = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            int randomIndex = random.nextInt(cats.size());
-            twoCats.add(cats.get(randomIndex));
-            cats.remove(randomIndex);
-        }
+        cats.get(0).getVotedUsers().add("author");
+        if (cats.get(0).getVotedUsers().contains(pricipal)) {
+            return "vote";
+        } else {
+            Random random = new Random();
+            List<Cat> twoCats = new ArrayList<>();
+            for (int i = 0; i < 2; i++) {
+                int randomIndex = random.nextInt(cats.size());
+                twoCats.add(cats.get(randomIndex));
+                cats.remove(randomIndex);
+            }
 
 //        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("cats", cats);
-        model.addAttribute("cat1", twoCats.get(0));
-        model.addAttribute("cat2", twoCats.get(1));
+            model.addAttribute("cats", cats);
+            model.addAttribute("cat1", twoCats.get(0));
+            model.addAttribute("cat2", twoCats.get(1));
 //        model.addAttribute("filter", tag);
-        return "vote";
+            return "vote";
+        }
+
     }
     @PostMapping("/{tag}")
     public String vote(@PathVariable String tag, @RequestParam Cat cats, Model model) {

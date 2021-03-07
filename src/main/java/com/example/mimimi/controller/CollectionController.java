@@ -1,7 +1,6 @@
 package com.example.mimimi.controller;
 
 import com.example.mimimi.domain.Cat;
-import com.example.mimimi.domain.MimimiCollections;
 import com.example.mimimi.repos.CatRepository;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Controller
-@RequestMapping("collection")
+@RequestMapping("/collection")
 public class CollectionController {
 
     @Value("${upload.path}")
@@ -25,6 +24,8 @@ public class CollectionController {
 
     @Autowired
     private CatRepository catRepository;
+
+    HashMap<String, String> catsTemp = new HashMap<>();
 
     @GetMapping
     public String index(@RequestParam(required = false, defaultValue = "") String tag) {
@@ -42,57 +43,61 @@ public class CollectionController {
         }
         File uploadDir = new File(uploadPath + "/" + tag);
         FileUtils.deleteDirectory(uploadDir);
-        model.addAttribute("cats", cats);
+        catsTemp.clear();
         return "redirect:/collection/" + tag;
 
     }
 
     @GetMapping("{tag}")
-    public String createCollection(@PathVariable String tag, Model model) {
-        List<Cat> cats = catRepository.findByTag(tag);
-        model.addAttribute("cats", cats);
+    public String createCollection(@PathVariable String tag, @RequestParam(required = false) String redirectError, Model model) {
+        model.addAttribute("redirectError", redirectError);
+        model.addAttribute("cats", catsTemp);
         return "collectionEdit";
     }
 
     @PostMapping("{tag}")
-    public String editCollection(@RequestParam String name, @RequestParam("file") MultipartFile file,
-                       Model model, @PathVariable String tag) throws IOException {
+    public String editCollection(@PathVariable String tag, @RequestParam String name, @RequestParam("file") MultipartFile file,
+                                 Model model) throws IOException {
         File uploadDir = new File(uploadPath + "/" + tag);
         String filename = file.getOriginalFilename();
         if (!uploadDir.exists()) {
             uploadDir.mkdir();
         }
-        if(new File(uploadPath + "/" + tag + "/" + filename).isFile()) {
-            List<Cat> cats = catRepository.findByTag(tag);
-            model.addAttribute("cats", cats);
+        if (new File(uploadPath + "/" + tag + "/" + filename).isFile()) {
+            model.addAttribute("cats", catsTemp);
             model.addAttribute("error", "File already exists, choose another.");
             model.addAttribute("name", name);
-            model.addAttribute("tag", tag);
             return "collectionEdit";
         }
         file.transferTo(new File(uploadPath + "/" + tag + "/" + filename));
-        File root = new File(uploadPath);
-
-//        System.out.println(catRepository.findAllTags());
-//        System.out.println(Arrays.toString(root.list()));
-//        MimimiCollections.collectionsMap.put(tag, filename);
-        Cat cat = new Cat(name, tag, filename, false);
-        catRepository.save(cat);
-        List<Cat> cats = catRepository.findByTag(tag);
-        model.addAttribute("cats", cats);
-        model.addAttribute("tag", tag);
+        catsTemp.put(filename, name);
+        model.addAttribute("cats", catsTemp);
         return "collectionEdit";
     }
 
     @PostMapping("{tag}/remove")
-    public String deleteCat(@PathVariable String tag, @RequestParam("catId") Cat cat) throws IOException {
-        File file = new File(uploadPath + "/" + tag + "/" + cat.getFilename());
+    public String deleteCat(@PathVariable String tag, @RequestParam("catKey") String catKey) throws IOException {
+        File file = new File(uploadPath + "/" + tag + "/" + catKey);
         file.delete();
         File uploadDir = new File(uploadPath + "/" + tag);
-        if (uploadDir.list().length == 0) FileUtils.deleteDirectory(uploadDir);
-        catRepository.delete(cat);
-        MimimiCollections.collectionsMap.remove(tag);
-        return "redirect:/collection/" + tag;
+        if (Objects.requireNonNull(uploadDir.list()).length == 0) FileUtils.deleteDirectory(uploadDir);
+        catsTemp.remove(catKey);
+        return "redirect:/collection/{tag}";
     }
 
+    @PostMapping("{tag}/save")
+    public String saveCollection(@PathVariable String tag, RedirectAttributes redirectError, Model model) {
+        if (catsTemp.size() % 2 > 0) {
+            redirectError.addAttribute("redirectError",
+                    "The number of elements to compare in the collection must be a multiple of two. Please add or remove an item.");
+            return "redirect:/collection/{tag}";
+        }
+        for (Map.Entry mapElement : catsTemp.entrySet()) {
+            Cat cat = new Cat(mapElement.getValue().toString(), tag, mapElement.getKey().toString());
+            catRepository.save(cat);
+        }
+        catsTemp.clear();
+        return "redirect:/vote/chooseCollection";
+    }
 }
+
