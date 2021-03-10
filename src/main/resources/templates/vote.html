@@ -20,7 +20,7 @@
                     <div class="card shadow-sm">
                         <img th:src="@{/img/} + ${cat1.tag} + '/' + ${cat1.filename}" class="d-block" alt="...">
                         <div class="card-body">
-                            <button type="submit" class="btn btn-secondary" th:value="${cat1.name}">First cat name</button>
+                            <button type="submit" class="btn btn-secondary" th:value="1" th:text="${cat1.name}">First cat name</button>
                         </div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                     <div class="card shadow-sm">
                         <img th:src="@{/img/} + ${cat2.tag} + '/' + ${cat2.filename}" class="d-block" alt="...">
                         <div class="card-body">
-                            <button type="submit" class="btn btn-secondary" th:value="${cat2.name}">Second cat name</button>
+                            <button type="submit" class="btn btn-secondary" th:value="2" th:text="${cat2.name}">Second cat name</button>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
 </div>
 <br>
 <div class="container text-center mt-5">
-    <h2>Choose your favourite.</h2>
+    <h2>Choose your favourite</h2>
     <br>
     <h3>Here you can vote for your favorite photos and see the most popular ones from other users, as well as create your own collection for voting.</h3>
 </div>

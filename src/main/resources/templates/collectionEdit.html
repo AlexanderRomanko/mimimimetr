@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +16,6 @@
         <br>
         <h3 th:if="${#maps.isEmpty(cats)}">Collection is empty.</h3>
         <form method="post" th:action="'/collection/' + ${tag}" enctype="multipart/form-data">
-<!--            <input type="hidden" th:name="tag" th:value="${tag}">-->
             <label>
                 <input type="text" class="form-control" name="name" th:value="${name}" placeholder="Enter name" required>
             </label>
@@ -27,7 +26,6 @@
 
         <form th:action="'/collection/' + ${tag} + '/save'" method="post">
             <h3 th:if="${redirectError}" th:text="${redirectError}"></h3>
-<!--            <input type="hidden" name="catKey" th:value="${cats}">-->
             <button class="btn btn-primary" type="submit">Save</button>
         </form>
 
