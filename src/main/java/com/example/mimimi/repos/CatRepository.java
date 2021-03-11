@@ -1,6 +1,6 @@
 package com.example.mimimi.repos;
 
-import com.example.mimimi.domain.Cat;
+import com.example.mimimi.entity.Cat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

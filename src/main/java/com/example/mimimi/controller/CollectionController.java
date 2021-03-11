@@ -1,6 +1,6 @@
 package com.example.mimimi.controller;
 
-import com.example.mimimi.domain.Cat;
+import com.example.mimimi.entity.Cat;
 import com.example.mimimi.repos.CatRepository;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;

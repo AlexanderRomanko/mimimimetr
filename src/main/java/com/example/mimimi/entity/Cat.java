@@ -1,10 +1,6 @@
-package com.example.mimimi.domain;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+package com.example.mimimi.entity;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,8 +16,14 @@ public class Cat {
     @Column(nullable = false, columnDefinition = "int default 0")
     private int likes;
 
-    @ElementCollection
-    private Set<String> votedUsers = new HashSet<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "voted_users", joinColumns = @JoinColumn(name = "user_id"))
+//    @Enumerated(EnumType.STRING)
+    private Set<String> votedUsers;
+
+//
+//    @ElementCollection()
+//    private Set<String> votedUsers = new HashSet<>();
 
     public Cat() {
     }

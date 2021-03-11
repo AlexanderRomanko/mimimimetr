@@ -1,6 +1,4 @@
-package com.example.mimimi.domain;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+package com.example.mimimi.entity;
 
 import javax.persistence.*;
 import java.util.Set;

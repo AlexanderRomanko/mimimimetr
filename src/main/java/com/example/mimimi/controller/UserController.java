@@ -1,7 +1,7 @@
 package com.example.mimimi.controller;
 
-import com.example.mimimi.domain.Role;
-import com.example.mimimi.domain.User;
+import com.example.mimimi.entity.Role;
+import com.example.mimimi.entity.User;
 import com.example.mimimi.repos.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

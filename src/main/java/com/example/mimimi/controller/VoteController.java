@@ -1,11 +1,10 @@
 package com.example.mimimi.controller;
 
-import com.example.mimimi.domain.Cat;
+import com.example.mimimi.entity.Cat;
 import com.example.mimimi.repos.CatRepository;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,10 +59,9 @@ public class VoteController {
     @GetMapping("/{tag}")
     public String vote(@PathVariable String tag, Model model) {
         List<Cat> cats = catRepository.findByTag(tag);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = auth.getPrincipal();
-        System.out.println(principal);
+        String principal = SecurityContextHolder.getContext().getAuthentication().getName();//if it's better to move this field up
         cats.removeIf(cat -> cat.getVotedUsers().contains(principal));
+        if (cats.isEmpty()) return "redirect:/vote/{tag}/results";
         if (!cats.get(0).getVotedUsers().contains(principal)) {
             Random random = new Random();
             List<Cat> twoCats = new ArrayList<>();
@@ -72,50 +70,25 @@ public class VoteController {
                 twoCats.add(cats.get(randomIndex));
                 cats.remove(randomIndex);
             }
-
-//        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
-            model.addAttribute("cats", cats);
             model.addAttribute("cat1", twoCats.get(0));
             model.addAttribute("cat2", twoCats.get(1));
-//        model.addAttribute("filter", tag);
         }
         return "vote";
-
     }
-//    @PostMapping("/{tag}")
-//    public String vote(@PathVariable String tag, @RequestParam List cats, Model model) {
-//        if (cats.isEmpty()) return "redirect:/vote/{tag}/results";
-//        Random random = new Random();
-//        List<Cat> twoCats = new ArrayList<>();
-//        for (int i = 0; i < 2; i++) {
-//            int randomIndex = random.nextInt(cats.size());
-//            twoCats.add(cats.get(randomIndex));
-//            cats.remove(randomIndex);
-//        }
-//        model.addAttribute("cats", cats);
-//        model.addAttribute("cat1", twoCats.get(0));
-//        model.addAttribute("cat2", twoCats.get(1));
-//        return "vote";
-//    }
 
-//    @PostMapping
-//    public String addCollection(@RequestParam String tag, @RequestParam String name, @RequestParam("file") MultipartFile file,
-//                                Model model) throws IOException {
-//        if (tag.isEmpty() || name.isEmpty() || file == null || file.getOriginalFilename().isEmpty()) {
-//            model.addAttribute("error", "Please, fill out all the fields and choose a file!");
-//        } else {
-//            Cat cat = new Cat(name, tag);
-//            File uploadDir = new File(uploadPath);
-//            if (!uploadDir.exists()) uploadDir.mkdir();
-//            String uuidFile = UUID.randomUUID().toString();
-//            String resultFileName = uuidFile + "." + file.getOriginalFilename();
-//            file.transferTo(new File(uploadPath + "/" + resultFileName));
-//            cat.setFilename(resultFileName);
-//            catRepository.save(cat);
-//        }
-//        Iterable<Cat> cats = catRepository.findAll();
-//        model.addAttribute("cats", cats);
-//        return "collection";
-//    }
+    @PostMapping("/{tag}")
+    public String vote(@PathVariable String tag, @RequestParam("cat1Id") Cat cat1, @RequestParam("cat2Id") Cat cat2,
+                       @RequestParam(required = false) String button1) {
+        String principal = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (button1 != null) cat1.setLikes(cat1.getLikes() + 1);
+        else cat2.setLikes(cat2.getLikes() + 1);
+        cat1.getVotedUsers().add(principal);
+        cat2.getVotedUsers().add(principal);
+        catRepository.save(cat1);
+        catRepository.save(cat2);
+        return "redirect:/vote/{tag}";
+    }
+
+//    Iterable<Cat> cats = catRepository.findAll();
 
 }
