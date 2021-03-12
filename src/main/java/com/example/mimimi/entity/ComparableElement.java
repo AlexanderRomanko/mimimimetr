@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Cat {
+public class ComparableElement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,29 +17,16 @@ public class Cat {
     private int likes;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "voted_users", joinColumns = @JoinColumn(name = "user_id"))
-//    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "voted_users", joinColumns = @JoinColumn(name = "voted_users_id"))
     private Set<String> votedUsers;
 
-//
-//    @ElementCollection()
-//    private Set<String> votedUsers = new HashSet<>();
-
-    public Cat() {
+    public ComparableElement() {
     }
 
-    public Cat(String name, String tag, String filename) {
+    public ComparableElement(String name, String tag, String filename) {
         this.name = name;
         this.tag = tag;
         this.filename = filename;
-    }
-
-    public Cat(String name, String tag, String filename, int likes, Set<String> votedUsers) {
-        this.name = name;
-        this.tag = tag;
-        this.filename = filename;
-        this.likes = likes;
-        this.votedUsers = votedUsers;
     }
 
     public Long getId() {

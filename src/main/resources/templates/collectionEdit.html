@@ -12,9 +12,9 @@
 <div class="d-flex" id="vote">
     <div class="container text-center my-4">
         <br>
-        <h2 style="color: white" th:text="'Collection &quot' + ${tag} + '&quot.'">Collection Name.</h2>
+        <h2 style="color: white" th:text="'Collection &quot' + ${tag} + '&quot.'">Collection name</h2>
         <br>
-        <h3 th:if="${#maps.isEmpty(cats)}">Collection is empty.</h3>
+        <h3 th:if="${#maps.isEmpty(collectionTemp)}">Collection is empty.</h3>
         <form method="post" th:action="'/collection/' + ${tag}" enctype="multipart/form-data">
             <label>
                 <input type="text" class="form-control" name="name" th:value="${name}" placeholder="Enter name" required>
@@ -26,17 +26,17 @@
 
         <form th:action="'/collection/' + ${tag} + '/save'" method="post">
             <h3 th:if="${redirectError}" th:text="${redirectError}"></h3>
-            <button class="btn btn-primary" type="submit">Save</button>
+            <button class="btn btn-primary" type="submit">Save collection</button>
         </form>
 
-        <div class="row" th:each="cat : ${cats}">
+        <div class="row" th:each="comparableElement : ${collectionTemp}">
             <div class="col-9">
                 <div class="card col-4">
-                    <img th:src="'/img/' + ${tag} + '/' + ${cat.key}" class="card-img-top" alt="...">
+                    <img th:src="'/img/' + ${tag} + '/' + ${comparableElement.key}" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${cat.value}">Name</h5>
+                        <h5 class="card-title" th:text="${comparableElement.value}">Name</h5>
                         <form th:action="'/collection/' + ${tag} + '/remove'" method="post">
-                            <input type="hidden" name="catKey" th:value="${cat.key}">
+                            <input type="hidden" name="comparableElementKey" th:value="${comparableElement.key}">
                             <button class="btn btn-primary" type="submit">Delete</button>
                         </form>
                     </div>

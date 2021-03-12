@@ -14,27 +14,27 @@
         <br>
         <h2 style="color: white">Which one do you like better?</h2>
         <br>
-        <form method="post" th:action="'/vote/' + ${cat1.tag}">
+        <form method="post" th:action="'/vote/' + ${comparableElement1.tag}">
             <div class="row justify-content-center">
                 <div class="col-5 m-3">
                     <div class="card shadow-sm">
-                        <img th:src="@{/img/} + ${cat1.tag} + '/' + ${cat1.filename}" class="d-block" alt="...">
+                        <img th:src="@{/img/} + ${comparableElement1.tag} + '/' + ${comparableElement1.filename}" class="d-block" alt="...">
                         <div class="card-body">
-                            <button type="submit" class="btn btn-secondary" name="button1" th:text="${cat1.name}">First cat name</button>
+                            <button type="submit" class="btn btn-secondary" name="button1" th:text="${comparableElement1.name}">First comparableElement name</button>
                         </div>
                     </div>
                 </div>
                 <div class="col-5 m-3">
                     <div class="card shadow-sm">
-                        <img th:src="@{/img/} + ${cat2.tag} + '/' + ${cat2.filename}" class="d-block" alt="...">
+                        <img th:src="@{/img/} + ${comparableElement2.tag} + '/' + ${comparableElement2.filename}" class="d-block" alt="...">
                         <div class="card-body">
-                            <button type="submit" class="btn btn-secondary" th:text="${cat2.name}">Second cat name</button>
+                            <button type="submit" class="btn btn-secondary" th:text="${comparableElement2.name}">Second comparableElement name</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="cat1Id" th:value="${cat1.id}">
-            <input type="hidden" name="cat2Id" th:value="${cat2.id}">
+            <input type="hidden" name="comparableElement1Id" th:value="${comparableElement1.id}">
+            <input type="hidden" name="comparableElement2Id" th:value="${comparableElement2.id}">
         </form>
     </div>
 </div>
@@ -45,19 +45,19 @@
     <h3>Here you can vote for your favorite photos and see the most popular ones from other users, as well as create your own collection for voting.</h3>
 </div>
 <!--    <form method="get" th:action="vote">-->
-<!--                <div th:each="cat : ${cats}" class="col">-->
+<!--                <div th:each="comparableElement : ${collectionTemp}" class="col">-->
 <!--                    <div class="card text-white bg-dark" style="max-width: 40rem;">-->
-<!--                        <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>-->
+<!--                        <span th:if="${comparableElement.name}"><img th:src="@{/img/} + ${comparableElement.filename}" class="card-img-top" alt="..."></span>-->
 <!--                        <div class="card-body">-->
-<!--                            <h5 class="card-title" th:text="${cat.name}"></h5>-->
+<!--                            <h5 class="card-title" th:text="${comparableElement.name}"></h5>-->
 <!--                        </div>-->
 <!--                    </div>-->
 <!--                </div>-->
 <!--                <div class="col">-->
 <!--                    <div class="card text-white bg-dark" style="max-width: 40rem;">-->
-<!--&lt;!&ndash;                        <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <span th:if="${comparableElement.name}"><img th:src="@{/img/} + ${comparableElement.filename}" class="card-img-top" alt="..."></span>&ndash;&gt;-->
 <!--&lt;!&ndash;                        <div class="card-body">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <h5 class="card-title" th:text="${cat.name}"></h5>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <h5 class="card-title" th:text="${comparableElement.name}"></h5>&ndash;&gt;-->
 <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
 <!--                    </div>-->
 <!--                </div>-->

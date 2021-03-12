@@ -1,7 +1,7 @@
 package com.example.mimimi.controller;
 
-import com.example.mimimi.entity.Cat;
-import com.example.mimimi.repos.CatRepository;
+import com.example.mimimi.entity.ComparableElement;
+import com.example.mimimi.repos.ComparableElementRepository;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ public class VoteController {
     private String uploadPath;
 
     @Autowired
-    private CatRepository catRepository;
+    private ComparableElementRepository comparableElementRepository;
 
     @GetMapping("/chooseCollection")
     public String showCollectionsList(Model model) throws IOException {
@@ -31,64 +31,71 @@ public class VoteController {
             File dir = new File(uploadPath + "/" + file);
             if (dir.list().length % 2 > 0) {
                 FileUtils.deleteDirectory(dir);
-                catRepository.deleteByTag(file);
+                comparableElementRepository.deleteByTag(file);
             }
         }
         List<String> tags = new ArrayList<>();
-        catRepository.findDistinctCatsWithDistinctTags().forEach(x -> tags.add(x.getTag()));
+        comparableElementRepository.findDistinctCatsWithDistinctTags().forEach(x -> tags.add(x.getTag()));
         for (String tag : tags) {
-            if (catRepository.findByTag(tag).size() % 2 > 0) {
+            if (comparableElementRepository.findByTag(tag).size() % 2 > 0) {
                 File uploadDir = new File(uploadPath + "/" + tag);
                 FileUtils.deleteDirectory(uploadDir);
-                catRepository.deleteByTag(tag);
+                comparableElementRepository.deleteByTag(tag);
             }
         }
 //        for (String tag : tags) {
-//            List<Cat> cats = catRepository.findByTag(tag);
-//            if (cats.size() % 2 > 0) {
+//            List<Cat> collectionTemp = catRepository.findByTag(tag);
+//            if (collectionTemp.size() % 2 > 0) {
 //                for (Cat cat :
-//                        cats) {
+//                        collectionTemp) {
 //                    catRepository.deleteById(cat.getId());
 //                }
 //            }
 //        }
-        model.addAttribute("collectionsList", catRepository.findDistinctCatsWithDistinctTags());
+        model.addAttribute("collectionsList", comparableElementRepository.findDistinctCatsWithDistinctTags());
         return "chooseVoteCollection";
     }
 
     @GetMapping("/{tag}")
     public String vote(@PathVariable String tag, Model model) {
-        List<Cat> cats = catRepository.findByTag(tag);
+        List<ComparableElement> comparableElements = comparableElementRepository.findByTag(tag);
         String principal = SecurityContextHolder.getContext().getAuthentication().getName();//if it's better to move this field up
-        cats.removeIf(cat -> cat.getVotedUsers().contains(principal));
-        if (cats.isEmpty()) return "redirect:/vote/{tag}/results";
-        if (!cats.get(0).getVotedUsers().contains(principal)) {
+        comparableElements.removeIf(comparableElement -> comparableElement.getVotedUsers().contains(principal));
+        if (comparableElements.isEmpty()) return "redirect:/vote/{tag}/results";
+        if (!comparableElements.get(0).getVotedUsers().contains(principal)) {
             Random random = new Random();
-            List<Cat> twoCats = new ArrayList<>();
+            List<ComparableElement> twoComparableElements = new ArrayList<>();
             for (int i = 0; i < 2; i++) {
-                int randomIndex = random.nextInt(cats.size());
-                twoCats.add(cats.get(randomIndex));
-                cats.remove(randomIndex);
+                int randomIndex = random.nextInt(comparableElements.size());
+                twoComparableElements.add(comparableElements.get(randomIndex));
+                comparableElements.remove(randomIndex);
             }
-            model.addAttribute("cat1", twoCats.get(0));
-            model.addAttribute("cat2", twoCats.get(1));
+            model.addAttribute("comparableElement1", twoComparableElements.get(0));
+            model.addAttribute("comparableElement2", twoComparableElements.get(1));
         }
         return "vote";
     }
 
     @PostMapping("/{tag}")
-    public String vote(@PathVariable String tag, @RequestParam("cat1Id") Cat cat1, @RequestParam("cat2Id") Cat cat2,
+    public String vote(@PathVariable String tag, @RequestParam("comparableElement1Id") ComparableElement comparableElement1, @RequestParam("comparableElement2Id") ComparableElement comparableElement2,
                        @RequestParam(required = false) String button1) {
         String principal = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (button1 != null) cat1.setLikes(cat1.getLikes() + 1);
-        else cat2.setLikes(cat2.getLikes() + 1);
-        cat1.getVotedUsers().add(principal);
-        cat2.getVotedUsers().add(principal);
-        catRepository.save(cat1);
-        catRepository.save(cat2);
+        if (button1 != null) comparableElement1.setLikes(comparableElement1.getLikes() + 1);
+        else comparableElement2.setLikes(comparableElement2.getLikes() + 1);
+        comparableElement1.getVotedUsers().add(principal);
+        comparableElement2.getVotedUsers().add(principal);
+        comparableElementRepository.save(comparableElement1);
+        comparableElementRepository.save(comparableElement2);
         return "redirect:/vote/{tag}";
     }
 
-//    Iterable<Cat> cats = catRepository.findAll();
+    @GetMapping("{tag}/results")
+    public String showResults(@PathVariable String tag, Model model) {
+        ArrayList<ComparableElement> votedList = new ArrayList<>(2);
+        votedList.addAll(comparableElementRepository.findByTagOrderByLikesDesc(tag));
+        votedList.trimToSize();
+        model.addAttribute("votedList", votedList);
+        return "results";
+    }
 
 }

@@ -13,23 +13,23 @@
 <div class="d-flex" id="vote">
     <div class="container text-center my-4">
         <br>
-        <h2 style="color: white">Collections List</h2>
+        <h2 style="color: white">Collections list</h2>
         <br>
         <form method="get" th:action="chooseCollection">
             <div id="carouselControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
                 <div class="carousel-inner shadow">
                     <div class="carousel-item active">
-<!--                        <div class="card text-center">-->
-                            <img th:src="@{/img/} + ${collectionsList[0].tag} + '/' + ${collectionsList[0].filename}" class="d-block" alt="...">
-<!--                        </div>-->
+                        <!--                        <div class="card text-center">-->
+                        <img th:src="@{/img/} + ${collectionsList[0].tag} + '/' + ${collectionsList[0].filename}" class="d-block" alt="...">
+                        <!--                        </div>-->
                         <div class="carousel-caption">
                             <a th:href="'/vote/' + ${collectionsList[0].tag}" class="btn btn-danger stretched-link" th:text="${collectionsList[0].tag}">Collection name</a>
                         </div>
                     </div>
                     <div class="carousel-item" th:each="field : ${collectionsList}" th:if="${field != collectionsList[0]}">
-<!--                        <div class="card text-center">-->
-                            <img th:src="@{/img/} + ${field.tag} + '/' + ${field.filename}" class="d-block" alt="...">
-<!--                        </div>-->
+                        <!--                        <div class="card text-center">-->
+                        <img th:src="@{/img/} + ${field.tag} + '/' + ${field.filename}" class="d-block" alt="...">
+                        <!--                        </div>-->
                         <div class="carousel-caption">
                             <a th:href="'/vote/' + ${field.tag}" class="btn btn-danger stretched-link" th:text="${field.tag}">Collection name</a>
                         </div>

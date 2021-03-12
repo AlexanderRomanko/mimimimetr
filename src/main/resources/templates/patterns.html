@@ -61,27 +61,27 @@
     <form method="get" th:action="main">
         <input type="text" name="filter" th:value="${filter}">
         <button type="submit">Найти</button>
-        <tr th:each="cat : ${cats}">
+        <tr th:each="comparableElement : ${comparableElements}">
             <div class="row row-cols-1 row-cols-md-2 g-4 mt-3 p-4">
                 <div class="col">
                     <div class="card text-white bg-dark" style="max-width: 40rem;">
-                        <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>
+                        <span th:if="${comparableElement.name}"><img th:src="@{/img/} + ${comparableElement.filename}" class="card-img-top" alt="..."></span>
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${cat.name}"></h5>
+                            <h5 class="card-title" th:text="${comparableElement.name}"></h5>
                         </div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card text-white bg-dark" style="max-width: 40rem;">
-                        <span th:if="${cat.name}"><img th:src="@{/img/} + ${cat.filename}" class="card-img-top" alt="..."></span>
+                        <span th:if="${comparableElement.name}"><img th:src="@{/img/} + ${comparableElement.filename}" class="card-img-top" alt="..."></span>
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${cat.name}"></h5>
+                            <h5 class="card-title" th:text="${comparableElement.name}"></h5>
                         </div>
                     </div>
                 </div>
             </div>
         </tr>
-        <span th:if="${#lists.isEmpty(cats)}">No images</span>
+        <span th:if="${#lists.isEmpty(comparableElements)}">No images</span>
     </form>
 </div>
 </body>

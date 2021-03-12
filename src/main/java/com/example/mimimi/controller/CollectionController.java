@@ -1,7 +1,7 @@
 package com.example.mimimi.controller;
 
-import com.example.mimimi.entity.Cat;
-import com.example.mimimi.repos.CatRepository;
+import com.example.mimimi.entity.ComparableElement;
+import com.example.mimimi.repos.ComparableElementRepository;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,9 +23,9 @@ public class CollectionController {
     private String uploadPath;
 
     @Autowired
-    private CatRepository catRepository;
+    private ComparableElementRepository comparableElementRepository;
 
-    HashMap<String, String> catsTemp = new HashMap<>();
+    HashMap<String, String> collectionTemp = new HashMap<>();/*??replace????????????????*/
 
     @GetMapping
     public String index(@RequestParam(required = false, defaultValue = "") String tag) {
@@ -36,22 +36,22 @@ public class CollectionController {
     @PostMapping
     public String indexCollection(@RequestParam String tag, Model model) throws IOException {
         if (tag.isEmpty()) return "collection";
-        List<Cat> cats = catRepository.findByTag(tag);
-        if (!cats.isEmpty()) {
+        ComparableElement comparableElement = comparableElementRepository.findFirstByTag(tag);
+        if (comparableElement != null) {
             model.addAttribute("error", "Collection exists, please choose another name.");
             return "collection";
         }
         File uploadDir = new File(uploadPath + "/" + tag);
         FileUtils.deleteDirectory(uploadDir);
-        catsTemp.clear();
+        collectionTemp.clear();/*??????????????????????*/
         return "redirect:/collection/" + tag;
 
     }
 
     @GetMapping("{tag}")
     public String createCollection(@PathVariable String tag, @RequestParam(required = false) String redirectError, Model model) {
-        model.addAttribute("redirectError", redirectError);
-        model.addAttribute("cats", catsTemp);
+        if (redirectError != null) model.addAttribute("redirectError", redirectError);
+        if (!collectionTemp.isEmpty()) model.addAttribute("collectionTemp", collectionTemp);
         return "collectionEdit";
     }
 
@@ -64,39 +64,40 @@ public class CollectionController {
             uploadDir.mkdir();
         }
         if (new File(uploadPath + "/" + tag + "/" + filename).isFile()) {
-            model.addAttribute("cats", catsTemp);
+            model.addAttribute("collectionTemp", collectionTemp);
             model.addAttribute("error", "File already exists, choose another.");
             model.addAttribute("name", name);
             return "collectionEdit";
         }
         file.transferTo(new File(uploadPath + "/" + tag + "/" + filename));
-        catsTemp.put(filename, name);
-        model.addAttribute("cats", catsTemp);
+        collectionTemp.put(filename, name);
+        model.addAttribute("collectionTemp", collectionTemp);
         return "collectionEdit";
     }
 
     @PostMapping("{tag}/remove")
-    public String deleteCat(@PathVariable String tag, @RequestParam("catKey") String catKey) throws IOException {
-        File file = new File(uploadPath + "/" + tag + "/" + catKey);
+    public String deleteCat(@PathVariable String tag, @RequestParam("comparableElementKey") String comparableElementKey) throws IOException {
+        File file = new File(uploadPath + "/" + tag + "/" + comparableElementKey);
         file.delete();
         File uploadDir = new File(uploadPath + "/" + tag);
         if (Objects.requireNonNull(uploadDir.list()).length == 0) FileUtils.deleteDirectory(uploadDir);
-        catsTemp.remove(catKey);
+        collectionTemp.remove(comparableElementKey);
         return "redirect:/collection/{tag}";
     }
 
     @PostMapping("{tag}/save")
     public String saveCollection(@PathVariable String tag, RedirectAttributes redirectError, Model model) {
-        if (catsTemp.size() % 2 > 0) {
+        if (collectionTemp.size() == 0) return "redirect:/collection/{tag}";
+        if (collectionTemp.size() % 2 > 0) {
             redirectError.addAttribute("redirectError",
                     "The number of elements to compare in the collection must be a multiple of two. Please add or remove an item.");
             return "redirect:/collection/{tag}";
         }
-        for (Map.Entry mapElement : catsTemp.entrySet()) {
-            Cat cat = new Cat(mapElement.getValue().toString(), tag, mapElement.getKey().toString());
-            catRepository.save(cat);
+        for (Map.Entry mapElement : collectionTemp.entrySet()) {
+            ComparableElement comparableElement = new ComparableElement(mapElement.getValue().toString(), tag, mapElement.getKey().toString());
+            comparableElementRepository.save(comparableElement);
         }
-        catsTemp.clear();
+        collectionTemp.clear();
         return "redirect:/vote/chooseCollection";
     }
 }
