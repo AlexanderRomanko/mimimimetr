@@ -2,7 +2,6 @@ package com.example.mimimi.service;
 
 import com.example.mimimi.entity.ComparableElement;
 import com.example.mimimi.repos.ComparableElementRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +12,6 @@ import java.util.Random;
 
 @Service
 public class VoteService {
-
-    @Value("${upload.path}")
-    private String uploadPath;
 
     private final ComparableElementRepository comparableElementRepository;
 
