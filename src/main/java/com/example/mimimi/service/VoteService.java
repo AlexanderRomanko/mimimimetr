@@ -35,8 +35,8 @@ public class VoteService {
     }
 
     public List<ComparableElement> getComparableElements(String tag) {
-        List<ComparableElement> comparableElements = comparableElementRepository.findByTag(tag); // Each time calls repository
         String principal = SecurityContextHolder.getContext().getAuthentication().getName();//if it's better to move this field up
+        List<ComparableElement> comparableElements = comparableElementRepository.findByTag(tag); // Each time calls repository
         comparableElements.removeIf(comparableElement -> comparableElement.getVotedUsers().contains(principal));
         if (comparableElements.isEmpty()) return comparableElements;
         Random random = new Random();
