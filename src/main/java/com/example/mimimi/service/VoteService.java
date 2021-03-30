@@ -2,20 +2,11 @@ package com.example.mimimi.service;
 
 import com.example.mimimi.entity.ComparableElement;
 import com.example.mimimi.repos.ComparableElementRepository;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
-import java.io.File;
-import java.io.IOException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -25,8 +16,6 @@ public class VoteService {
 
     @Value("${upload.path}")
     private String uploadPath;
-
-//    private static String principal = SecurityContextHolder.getContext().getAuthentication().getName();
 
     private final ComparableElementRepository comparableElementRepository;
 
