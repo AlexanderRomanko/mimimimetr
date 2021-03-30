@@ -16,24 +16,50 @@ import java.io.IOException;
 import java.util.*;
 
 @Controller
-@RequestMapping("/collection")
+//@RequestMapping("/collection")
 public class CollectionController {
 
     @Value("${upload.path}")
     private String uploadPath;
 
-    @Autowired
-    private ComparableElementRepository comparableElementRepository;
-
     HashMap<String, String> collectionTemp = new HashMap<>();/*??replace????????????????*/
 
-    @GetMapping
+    private final ComparableElementRepository comparableElementRepository;
+
+    public CollectionController(ComparableElementRepository comparableElementRepository) {
+        this.comparableElementRepository = comparableElementRepository;
+    }
+
+    @GetMapping("/vote/chooseCollection")
+    public String showCollectionsList(Model model) throws IOException {
+        File upload = new File(uploadPath);
+        for (String file : upload.list()) {
+            File dir = new File(uploadPath + "/" + file);
+            if (dir.list().length % 2 > 0) {
+                FileUtils.deleteDirectory(dir);
+                comparableElementRepository.deleteByTag(file);
+            }
+        }
+        List<String> tags = new ArrayList<>();
+        comparableElementRepository.findDistinctCatsWithDistinctTags().forEach(x -> tags.add(x.getTag()));
+        for (String tag : tags) {
+            if (comparableElementRepository.findByTag(tag).size() % 2 > 0) {
+                File uploadDir = new File(uploadPath + "/" + tag);
+                FileUtils.deleteDirectory(uploadDir);
+                comparableElementRepository.deleteByTag(tag);
+            }
+        }
+        model.addAttribute("collectionsList", comparableElementRepository.findDistinctCatsWithDistinctTags());
+        return "chooseVoteCollection";
+    }
+
+    @GetMapping("/collection")
     public String index(@RequestParam(required = false, defaultValue = "") String tag) {
         if (tag.isEmpty()) return "collection";
         return "collectionEdit";
     }
 
-    @PostMapping
+    @PostMapping("/collection")
     public String indexCollection(@RequestParam String tag, Model model) throws IOException {
         if (tag.isEmpty()) return "collection";
         ComparableElement comparableElement = comparableElementRepository.findFirstByTag(tag);
@@ -48,14 +74,14 @@ public class CollectionController {
 
     }
 
-    @GetMapping("{tag}")
+    @GetMapping("/collection/{tag}")
     public String createCollection(@PathVariable String tag, @RequestParam(required = false) String redirectError, Model model) {
         if (redirectError != null) model.addAttribute("redirectError", redirectError);
         if (!collectionTemp.isEmpty()) model.addAttribute("collectionTemp", collectionTemp);
         return "collectionEdit";
     }
 
-    @PostMapping("{tag}")
+    @PostMapping("/collection/{tag}")
     public String editCollection(@PathVariable String tag, @RequestParam String name, @RequestParam("file") MultipartFile file,
                                  Model model) throws IOException {
         File uploadDir = new File(uploadPath + "/" + tag);
@@ -75,7 +101,7 @@ public class CollectionController {
         return "collectionEdit";
     }
 
-    @PostMapping("{tag}/remove")
+    @PostMapping("/collection/{tag}/remove")
     public String deleteCat(@PathVariable String tag, @RequestParam("comparableElementKey") String comparableElementKey) throws IOException {
         File file = new File(uploadPath + "/" + tag + "/" + comparableElementKey);
         file.delete();
@@ -85,7 +111,7 @@ public class CollectionController {
         return "redirect:/collection/{tag}";
     }
 
-    @PostMapping("{tag}/save")
+    @PostMapping("/collection/{tag}/save")
     public String saveCollection(@PathVariable String tag, RedirectAttributes redirectError, Model model) {
         if (collectionTemp.size() == 0) return "redirect:/collection/{tag}";
         if (collectionTemp.size() % 2 > 0) {

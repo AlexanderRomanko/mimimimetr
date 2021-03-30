@@ -65,18 +65,23 @@ h3 {
 .btn {
     /*    background-color: #003049;*/
     /*    color: white;*/
-    min-width: 150px;
+    width: 200px;
     padding: 12px 24px;
     /*    text-align: center;*/
     font-size: 18px;
     border-radius: 30px;
 }
-.form-control {
-    padding: 12px 24px;
-    border-radius: 30px;
-}
+/*.form-control {*/
+/*    padding: 12px 24px;*/
+/*    !*border-radius: 30px;*!*/
+/*    !*min-width: 150px;*!*/
+/*}*/
 input {
+    width: 200px;
+    height: 50px;
+    border-radius: 30px;
     text-align: center;
+    margin: 5px;
 }
 .navbar {
     height: 78px;

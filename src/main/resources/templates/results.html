@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mimimimetr</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div th:insert="~{parts/parts :: navbar} "></div>
+<div class="d-flex" id="vote">
+    <div class="container text-center my-4">
+        <br>
+        <h2 style="color: white">You have already voted this collection.</h2>
+        <h2>Voting results. Top 10:</h2>
+        <br>
+        <div class="row" th:each="votedElement : ${votedList}">
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-4">
+                        <h3 th:text="${votedElementStat.index + 1} + ' place'"></h3>
+
+                    </div>
+                    <div class="card col-4">
+                        <img th:src="'/img/' + ${tag} + '/' + ${votedElement.filename}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title"
+                                th:text="${votedElement.name} + ' - ' + ${votedElement.likes} + ' likes'">Name -
+                                Likes</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="/main" class="btn btn-primary">Continue</a>
+    </div>
+</div>
+</body>
+</html>
