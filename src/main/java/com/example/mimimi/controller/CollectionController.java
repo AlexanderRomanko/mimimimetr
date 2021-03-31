@@ -1,9 +1,7 @@
 package com.example.mimimi.controller;
 
-import com.example.mimimi.entity.ComparableElement;
-import com.example.mimimi.repos.ComparableElementRepository;
+import com.example.mimimi.service.CollectionService;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +14,6 @@ import java.io.IOException;
 import java.util.*;
 
 @Controller
-//@RequestMapping("/collection")
 public class CollectionController {
 
     @Value("${upload.path}")
@@ -24,32 +21,20 @@ public class CollectionController {
 
     HashMap<String, String> collectionTemp = new HashMap<>();/*??replace????????????????*/
 
-    private final ComparableElementRepository comparableElementRepository;
+    private final CollectionService collectionService;
 
-    public CollectionController(ComparableElementRepository comparableElementRepository) {
-        this.comparableElementRepository = comparableElementRepository;
+    public CollectionController(CollectionService collectionService) {
+        this.collectionService = collectionService;
     }
 
     @GetMapping("/vote/chooseCollection")
-    public String showCollectionsList(Model model) throws IOException {
-        File upload = new File(uploadPath);
-        for (String file : upload.list()) {
-            File dir = new File(uploadPath + "/" + file);
-            if (dir.list().length % 2 > 0) {
-                FileUtils.deleteDirectory(dir);
-                comparableElementRepository.deleteByTag(file);
-            }
+    public String showCollectionsList(Model model) {
+        try { // move try/catch somewhere else????????
+            collectionService.removeOddNumberOfFilesCollections();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        List<String> tags = new ArrayList<>();
-        comparableElementRepository.findDistinctCatsWithDistinctTags().forEach(x -> tags.add(x.getTag()));
-        for (String tag : tags) {
-            if (comparableElementRepository.findByTag(tag).size() % 2 > 0) {
-                File uploadDir = new File(uploadPath + "/" + tag);
-                FileUtils.deleteDirectory(uploadDir);
-                comparableElementRepository.deleteByTag(tag);
-            }
-        }
-        model.addAttribute("collectionsList", comparableElementRepository.findDistinctCatsWithDistinctTags());
+        model.addAttribute("collectionsList", collectionService.getCollectionsList());
         return "chooseVoteCollection";
     }
 
@@ -62,8 +47,7 @@ public class CollectionController {
     @PostMapping("/collection")
     public String indexCollection(@RequestParam String tag, Model model) throws IOException {
         if (tag.isEmpty()) return "collection";
-        ComparableElement comparableElement = comparableElementRepository.findFirstByTag(tag);
-        if (comparableElement != null) {
+        if (collectionService.collectionExists(tag)) {
             model.addAttribute("error", "Collection exists, please choose another name.");
             return "collection";
         }
@@ -71,7 +55,6 @@ public class CollectionController {
         FileUtils.deleteDirectory(uploadDir);
         collectionTemp.clear();/*??????????????????????*/
         return "redirect:/collection/" + tag;
-
     }
 
     @GetMapping("/collection/{tag}")
@@ -112,17 +95,14 @@ public class CollectionController {
     }
 
     @PostMapping("/collection/{tag}/save")
-    public String saveCollection(@PathVariable String tag, RedirectAttributes redirectError, Model model) {
+    public String saveCollection(@PathVariable String tag, RedirectAttributes redirectError) {
         if (collectionTemp.size() == 0) return "redirect:/collection/{tag}";
         if (collectionTemp.size() % 2 > 0) {
             redirectError.addAttribute("redirectError",
                     "The number of elements to compare in the collection must be a multiple of two. Please add or remove an item.");
             return "redirect:/collection/{tag}";
         }
-        for (Map.Entry mapElement : collectionTemp.entrySet()) {
-            ComparableElement comparableElement = new ComparableElement(mapElement.getValue().toString(), tag, mapElement.getKey().toString());
-            comparableElementRepository.save(comparableElement);
-        }
+        collectionTemp.entrySet().forEach(x -> collectionService.createNewComparableElement(x, tag));
         collectionTemp.clear();
         return "redirect:/vote/chooseCollection";
     }
