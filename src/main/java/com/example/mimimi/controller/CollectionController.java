@@ -58,7 +58,7 @@ public class CollectionController {
     }
 
     @GetMapping("/collection/{tag}")
-    public String createCollection(@PathVariable String tag, @RequestParam(required = false) String redirectError, Model model) {
+    public String editCollection(@PathVariable String tag, @RequestParam(required = false) String redirectError, Model model) {
         if (redirectError != null) model.addAttribute("redirectError", redirectError);
         if (!collectionTemp.isEmpty()) model.addAttribute("collectionTemp", collectionTemp);
         return "collectionEdit";
