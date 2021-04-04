@@ -14,7 +14,7 @@ public interface ComparableElementRepository extends JpaRepository<ComparableEle
     ComparableElement findFirstByTag(String tag);
 
     @Query(value = "select * from comparable_element t order by likes desc limit 10", nativeQuery = true)
-    List<Long> findWinnersIdList();
+//    List<Long> findWinnersIdList();
 
     List<ComparableElement> findByTagOrderByLikesDesc  (String tag);
 

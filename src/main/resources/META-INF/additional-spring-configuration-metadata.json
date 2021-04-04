@@ -4,5 +4,10 @@
       "name": "upload.path",
       "type": "java.lang.String",
       "description": "Description for upload.path."
-  }
-] }
+    },
+    {
+      "name": "java.runtime.version",
+      "type": "java.lang.String",
+      "description": "Description for java.runtime.version."
+    }
+  ] }
