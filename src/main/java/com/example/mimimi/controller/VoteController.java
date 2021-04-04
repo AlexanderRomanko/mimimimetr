@@ -21,7 +21,8 @@ public class VoteController {
     @GetMapping("/{tag}")
     public String showComparableElements(@PathVariable String tag, Model model) {
         List<ComparableElement> twoComparableElements = voteService.getComparableElements(tag);
-        if (twoComparableElements.isEmpty()) return "redirect:/vote/{tag}/results";
+        if (twoComparableElements.isEmpty())
+            return "redirect:/vote/{tag}/results";
         model.addAttribute("comparableElement1", twoComparableElements.get(0));
         model.addAttribute("comparableElement2", twoComparableElements.get(1));
         return "vote";

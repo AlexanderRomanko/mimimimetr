@@ -41,11 +41,11 @@
         <h3>Invalid username and/or password.</h3>
     </div>
     <form th:action="@{/login}" method="post">
-        <div><label><input type="text" name="username" placeholder="Enter username" required></label></div>
-        <div><label><input type="password" name="password" placeholder="Enter password" required></label></div>
-        <div><input type="submit" class="btn btn-danger" value="Log in"></div>
+        <div><label><input type="text" class="form-control mt-2" name="username" placeholder="Enter username" required></label></div>
+        <div><label><input type="password" class="form-control mt-2" name="password" placeholder="Enter password" required></label></div>
+        <div><input type="submit" class="btn btn-danger mt-2" value="Log in"></div>
 <!--        <div class="d-grid gap-2 col-2 mx-auto mt-3"><input type="button" class="btn btn-secondary" value="Sign up" onclick="window.location.href='registration'"></div>-->
-        <div><a href="/registration" type="button" class="btn btn-secondary">Sign up</a></div>
+        <div><a href="/registration" type="button" class="btn btn-secondary mt-2">Sign up</a></div>
 <!--        <div class="d-grid gap-2 col-2 mx-auto mt-3"><input type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#EpicModal" value="Sign up"></div>-->
     </form>
 </div>

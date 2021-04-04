@@ -24,7 +24,6 @@
 #vote {
     width: 100%;
     height: 50vh;
-    /*height: 92.8vh;*/
     background: linear-gradient(rgba(33, 37, 41, 0.7), rgba(33, 37, 41, 0.7)),
     url("https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2020/12/cats-768x512.jpg") top -300px right no-repeat;
     background-size: cover;
@@ -33,7 +32,6 @@
 #collection {
     width: 100%;
     height: 50vh;
-    /*height: 92.8vh;*/
     background: linear-gradient(rgba(33, 37, 41, 0.7), rgba(33, 37, 41, 0.7)),
     url("https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2020/12/happy-irish-setter-dogs-768x515.jpg") top -300px right no-repeat;
     background-size: cover;
@@ -42,7 +40,6 @@
 #userlist {
     width: 100%;
     height: 50vh;
-    /*height: 92.8vh;*/
     background: linear-gradient(rgba(33, 37, 41, 0.7), rgba(33, 37, 41, 0.7)),
     url("https://pets.ingridtemplates.com/wp-content/uploads/sites/14/2020/12/smiling-couple-palming-labrador-dog-at-animals-shelter-and-choosing-for-adoption-768x513.jpg") top -300px right no-repeat;
     background-size: cover;
@@ -63,8 +60,6 @@ h3 {
     font-size: 33px;
 }
 .btn {
-    /*    background-color: #003049;*/
-    /*    color: white;*/
     width: 200px;
     padding: 12px 24px;
     /*    text-align: center;*/
@@ -76,7 +71,7 @@ h3 {
 /*    !*border-radius: 30px;*!*/
 /*    !*min-width: 150px;*!*/
 /*}*/
-input {
+.form-control {
     width: 200px;
     height: 50px;
     border-radius: 30px;
@@ -87,21 +82,32 @@ input {
     height: 78px;
 }
 .carousel {
-    width: 800px;
-    position: absolute;
-    left: 50%;
-    top: 42%;
-    transform: translate(-50%, -50%);
-
+    border: 5px solid #f8f9fa;
+    background-color: #f8f9fa;
+    /*width: 800px;*/
+    /* position: absolute; */
+    /* left: 50%; */
+    /* top: 42%; */
+    /* transform: translate(-50%, -50%); */
+}
+.row {
+       --bs-gutter-x: -3rem;
 }
 .carousel-item img {
     height: 420px;
-    width: 100%;
-    /*height: 100%;*/
+    /* width: 100%; */
     object-fit: cover;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
 }
-
+.display-3 {
+    font-weight: 500;
+    color: #D62828;
+}
+.display-6 {
+    font-weight: 500;
+    font-size: 33px;
+    color: #6c757d;
+}
 /*.collapse.navbar-collapse {*/
 /*    width: 500px;*/
 /*}*/
