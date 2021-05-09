@@ -1,46 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mimimimetr</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <div th:insert="~{parts/parts :: navbar} "></div>
-<div class="d-flex" id="vote">
-    <div class="container text-center my-4">
-        <br>
-        <h2 style="color: white" th:text="'User ' + ${user.username} + ' edit:'">User edit</h2>
-        <br>
+<div class="d-flex text-center justify-content-center align-items-center" id="userlist">
+    <div class="row justify-content-center mb-3">
+        <div class="display-3" style="color: white" th:text="'User ' + ${user.username} + ' edit:'">User edit</div>
         <form method="post" th:action="user">
-            <div>
-                User name:
-            </div>
-            <div>
-                <label>
-                    <input type="text" name="username" th:value="${user.username}">
-                </label>
-            </div>
-            Roles:
-            <div th:each="role : ${roles}">
-                <label>
-                    <input type="checkbox" th:name="${role}" th:checked="${user.roles.contains(role)}">
-                </label>
-                <label th:text="${role}"></label>
+            <div class="h4 mt-3">User name:</div>
+            <div><label><input type="text" class="form-control" name="username" th:value="${user.username}"></label></div>
+            <div class="row">
+                <div class="h4 mt-3">Roles:
+                    <div th:each="role : ${roles}">
+                        <label>
+                            <input type="checkbox" th:name="${role}" th:checked="${user.roles.contains(role)}">
+                        </label>
+                        <label th:text="${role}"></label>
+                    </div>
+                </div>
             </div>
             <input type="hidden" name="userId" th:value="${user.id}">
-            <button type="submit">Save changes</button>
+            <input type="submit" class="btn btn-danger mt-2" value="Save changes">
         </form>
     </div>
 </div>
-<br>
-<div class="container text-center mt-5">
-    <h2>Edit username and roles of selected user.</h2>
-    <br>
-    <h3>Here you can vote for your favorite photos and see the most popular ones from other users, as well as create your own collection for voting.</h3>
+<div class="container d-flex text-center align-items-center" style="height: 45vh">
+    <div>
+        <div class="display-3" th:text="'Welcome ' + ${#httpServletRequest.remoteUser}">Edit username and roles of selected user.</div>
+        <div class="h2 mt-xl-4 mt-lg-3 mt-md-2 mt-1">Here you can vote for your favorite photos and see the most popular ones from other users, as well as create your own collection for voting.</div>
+    </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 </body>
 </html>

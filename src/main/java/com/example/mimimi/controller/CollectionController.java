@@ -19,7 +19,7 @@ public class CollectionController {
     @Value("${upload.path}")
     private String uploadPath;
 
-    HashMap<String, String> collectionTemp = new HashMap<>();/*??replace????????????????*/
+    Map<String, String> collectionTemp = new LinkedHashMap<>();/*??replace????????????????*/
 
     private final CollectionService collectionService;
 
@@ -48,7 +48,7 @@ public class CollectionController {
     public String indexCollection(@RequestParam String tag, Model model) throws IOException {
         if (tag.isEmpty()) return "collection";
         if (collectionService.collectionExists(tag)) {
-            model.addAttribute("error", "Collection exists, please choose another name.");
+            model.addAttribute("error", "Collection exists, please choose another name");
             return "collection";
         }
         File uploadDir = new File(uploadPath + "/" + tag);
@@ -72,11 +72,15 @@ public class CollectionController {
         if (!uploadDir.exists()) {
             uploadDir.mkdir();
         }
+        if (new File(uploadPath + "/" + tag + "/" + filename).isFile() && collectionTemp.isEmpty()) {
+            model.addAttribute("error", "File already exists, choose another.");
+            return "redirect:/collection";
+        }
         if (new File(uploadPath + "/" + tag + "/" + filename).isFile()) {
-            model.addAttribute("collectionTemp", collectionTemp);
+//            model.addAttribute("collectionTemp", collectionTemp);
             model.addAttribute("error", "File already exists, choose another.");
             model.addAttribute("name", name);
-            return "collectionEdit";
+//            return "collectionEdit";
         }
         file.transferTo(new File(uploadPath + "/" + tag + "/" + filename));
         collectionTemp.put(filename, name);
@@ -99,7 +103,7 @@ public class CollectionController {
         if (collectionTemp.size() == 0) return "redirect:/collection/{tag}";
         if (collectionTemp.size() % 2 > 0) {
             redirectError.addAttribute("redirectError",
-                    "The number of elements to compare in the collection must be a multiple of two. Please add or remove an item.");
+                    "The number of elements to compare must be a multiple of two.");
             return "redirect:/collection/{tag}";
         }
         collectionTemp.entrySet().forEach(x -> collectionService.createNewComparableElement(x, tag));

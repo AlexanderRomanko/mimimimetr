@@ -1,69 +1,45 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mimimimetr</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <div th:insert="~{parts/parts :: navbar} "></div>
-<div class="d-flex" id="vote">
-    <div class="container text-center my-4">
-        <br>
-        <h2 style="color: white">Which one do you like better?</h2>
-        <br>
-        <form method="post" th:action="'/vote/' + ${comparableElement1.tag}">
-            <div class="row justify-content-center">
-                <div class="col-5 m-3">
-                    <div class="card shadow-sm">
-                        <img th:src="@{/img/} + ${comparableElement1.tag} + '/' + ${comparableElement1.filename}" class="d-block" alt="...">
-                        <div class="card-body">
-                            <button type="submit" class="btn btn-secondary" name="button1" th:text="${comparableElement1.name}">First comparableElement name</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-5 m-3">
-                    <div class="card shadow-sm">
-                        <img th:src="@{/img/} + ${comparableElement2.tag} + '/' + ${comparableElement2.filename}" class="d-block" alt="...">
-                        <div class="card-body">
-                            <button type="submit" class="btn btn-secondary" th:text="${comparableElement2.name}">Second comparableElement name</button>
-                        </div>
+<div class="container-fluid text-center" id="vote">
+    <form method="post" th:action="'/vote/' + ${comparableElement1.tag}">
+        <div class="display-3 pt-3 pt-md-5" style="color: white">Which one do you like better?</div>
+        <div class="row justify-content-center mx-0 mt-3 mt-md-5" id="image">
+            <div class="col-6 col-md-5 col-xl-4">
+                <div class="card h-100 shadow mx-md-3">
+                    <img th:src="@{/img/} + ${comparableElement1.tag} + '/' + ${comparableElement1.filename}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <button type="submit" class="btn btn-secondary" name="button1" th:text="${comparableElement1.name}">First comparableElement name</button>
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="comparableElement1Id" th:value="${comparableElement1.id}">
-            <input type="hidden" name="comparableElement2Id" th:value="${comparableElement2.id}">
-        </form>
+            <div class="col-6 col-md-5 col-xl-4">
+                <div class="card h-100 shadow mx-md-3">
+                    <img th:src="@{/img/} + ${comparableElement2.tag} + '/' + ${comparableElement2.filename}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <button type="submit" class="btn btn-secondary" th:text="${comparableElement2.name}">Second comparableElement name</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="comparableElement1Id" th:value="${comparableElement1.id}">
+        <input type="hidden" name="comparableElement2Id" th:value="${comparableElement2.id}">
+    </form>
+</div>
+<div class="container d-flex text-center align-items-center" style="height: 45vh">
+    <div>
+        <div class="display-3">Choose your favourite</div>
+        <div class="h2 mt-xl-4 mt-lg-3 mt-md-2 mt-1">Here you can vote for your favorite photos and see the most popular ones from other users, as well as create your own collection for voting.</div>
     </div>
 </div>
-<br>
-<div class="container text-center mt-5">
-    <h2>Choose your favourite</h2>
-    <br>
-    <h3>Here you can vote for your favorite photos and see the most popular ones from other users, as well as create your own collection for voting.</h3>
-</div>
-<!--    <form method="get" th:action="vote">-->
-<!--                <div th:each="comparableElement : ${collectionTemp}" class="col">-->
-<!--                    <div class="card text-white bg-dark" style="max-width: 40rem;">-->
-<!--                        <span th:if="${comparableElement.name}"><img th:src="@{/img/} + ${comparableElement.filename}" class="card-img-top" alt="..."></span>-->
-<!--                        <div class="card-body">-->
-<!--                            <h5 class="card-title" th:text="${comparableElement.name}"></h5>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="col">-->
-<!--                    <div class="card text-white bg-dark" style="max-width: 40rem;">-->
-<!--&lt;!&ndash;                        <span th:if="${comparableElement.name}"><img th:src="@{/img/} + ${comparableElement.filename}" class="card-img-top" alt="..."></span>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <div class="card-body">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <h5 class="card-title" th:text="${comparableElement.name}"></h5>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </tr>-->
-<!--    </form>-->
-<!--</div>-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
 </body>
 </html>

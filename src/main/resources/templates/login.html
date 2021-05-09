@@ -8,46 +8,17 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<!--<div class="modal" id="EpicModal" tabindex="-1">-->
-<!--    <div class="modal-dialog modal-dialog-centered">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="text-center mt-5">-->
-<!--                <h3 style="color: #D62828">Please log in to continue.</h3>-->
-<!--                <div class="alert alert-danger" th:if="${param.error}">-->
-<!--                    <h5>Invalid username and/or password.</h5>-->
-<!--                </div>-->
-<!--                <div th:if="${param.logout}">-->
-<!--                    <h5>You are logged out.</h5>-->
-<!--                </div>-->
-<!--                <form th:action="@{/login}" method="post">-->
-<!--                    <div class="d-grid gap-4 col-6 mx-auto m-2 mb-5">-->
-<!--                        <label>-->
-<!--                            <input type="text" class="form-control" name="username" placeholder="Enter username" required autofocus/>-->
-<!--                        </label>-->
-<!--                        <label>-->
-<!--                            <input type="password" class="form-control" name="password" placeholder="Enter password" required/>-->
-<!--                        </label>-->
-<!--                        <input type="submit" class="btn btn-danger" value="Log in" onclick="window.location.href='main'"/>-->
-<!--                        <input type="button" class="btn btn-secondary" value="Sign up" onclick="window.location.href='registration'">-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<div class="text-center align-content-center mt-5">
+<div class="text-center mt-5 my-4">
     <h2>Please log in to continue.</h2>
-    <div th:if="${param.error}">
-        <h3>Invalid username and/or password.</h3>
-    </div>
     <form th:action="@{/login}" method="post">
-        <div><label><input type="text" class="form-control mt-2" name="username" placeholder="Enter username" required></label></div>
+        <div><label><input type="text" class="form-control mt-2" name="username" placeholder="Enter username" required autofocus></label></div>
         <div><label><input type="password" class="form-control mt-2" name="password" placeholder="Enter password" required></label></div>
         <div><input type="submit" class="btn btn-danger mt-2" value="Log in"></div>
-<!--        <div class="d-grid gap-2 col-2 mx-auto mt-3"><input type="button" class="btn btn-secondary" value="Sign up" onclick="window.location.href='registration'"></div>-->
         <div><a href="/registration" type="button" class="btn btn-secondary mt-2">Sign up</a></div>
-<!--        <div class="d-grid gap-2 col-2 mx-auto mt-3"><input type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#EpicModal" value="Sign up"></div>-->
     </form>
+    <div th:if="${param.error}">
+        <h3 class="mt-4">Invalid username and/or password.</h3>
+    </div>
 </div>
 </body>
 </html>
