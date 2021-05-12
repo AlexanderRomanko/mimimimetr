@@ -29,7 +29,8 @@ public class VoteController {
     }
 
     @PostMapping("/{tag}")
-    public String vote(@PathVariable String tag, @RequestParam("comparableElement1Id") ComparableElement comparableElement1, @RequestParam("comparableElement2Id") ComparableElement comparableElement2,
+    public String vote(@PathVariable String tag, @RequestParam("comparableElement1Id") ComparableElement comparableElement1,
+                       @RequestParam("comparableElement2Id") ComparableElement comparableElement2,
                        @RequestParam(required = false) String button1) {
         voteService.vote(comparableElement1, comparableElement2, button1);
         return "redirect:/vote/{tag}";

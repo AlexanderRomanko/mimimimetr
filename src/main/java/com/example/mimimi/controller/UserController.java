@@ -27,16 +27,17 @@ public class UserController {
         return "userList";
     }
 
-    @GetMapping("{user}")
-    public String userEditForm(@PathVariable User user, Model model) {
+    @GetMapping("{user}") //todo use userID
+    public String userEditForm(@PathVariable User user, Model model) { //todo better use ID
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return "userEdit";
     }
 
-    @PostMapping("{user}")
-    public String userSave(@RequestParam String username, @RequestParam Map<String, String> form,
+    @PostMapping("{user}") //todo use userID
+    public String userSave(@RequestParam String username, @RequestParam Map<String, String> form, //todo use UserDTO
                            @RequestParam("userId") User user) {
+        //todo get user from DB and update
         user.setUsername(username);
         Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
         user.getRoles().clear();

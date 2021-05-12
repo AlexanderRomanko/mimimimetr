@@ -16,7 +16,7 @@ import java.util.*;
 @Controller
 public class CollectionController {
 
-    @Value("${upload.path}")
+    @Value("${upload.path}") //todo dont use absolute path, in unix server path will be different
     private String uploadPath;
 
     Map<String, String> collectionTemp = new LinkedHashMap<>();/*??replace????????????????*/
@@ -27,7 +27,7 @@ public class CollectionController {
         this.collectionService = collectionService;
     }
 
-    @GetMapping("/vote/chooseCollection")
+    @GetMapping("/vote/chooseCollection") //todo this action need ?????
     public String showCollectionsList(Model model) {
         try { // move try/catch somewhere else????????
             collectionService.removeOddNumberOfFilesCollections();
@@ -44,7 +44,7 @@ public class CollectionController {
         return "collectionEdit";
     }
 
-    @PostMapping("/collection")
+    @PostMapping("/collection") //todo check it
     public String indexCollection(@RequestParam String tag, Model model) throws IOException {
         if (tag.isEmpty()) return "collection";
         if (collectionService.collectionExists(tag)) {
