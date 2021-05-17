@@ -29,11 +29,11 @@ public class CollectionController {
 
     @GetMapping("/vote/chooseCollection")
     public String showCollectionsList(Model model) {
-        try { // move try/catch somewhere else????????
-            collectionService.removeOddNumberOfFilesCollections();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try { // move try/catch somewhere else????????
+//            collectionService.removeOddNumberOfFilesCollections();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         model.addAttribute("collectionsList", collectionService.getCollectionsList());
         return "chooseVoteCollection";
     }
@@ -70,9 +70,9 @@ public class CollectionController {
         File uploadDir = new File(uploadPath + "/" + tag);
         String filename = file.getOriginalFilename();
         if (!uploadDir.exists()) {
-            uploadDir.mkdir();
+            uploadDir.mkdirs();
         }
-        if (new File(uploadPath + "/" + tag + "/" + filename).isFile() && collectionTemp.isEmpty()) {
+        if (new File(uploadPath + File.pathSeparator + tag + "/" + filename).isFile() && collectionTemp.isEmpty()) {
             model.addAttribute("error", "File already exists, choose another.");
             return "redirect:/collection";
         }

@@ -33,7 +33,7 @@ public class RegistrationController {
                 model.addAttribute("message", "User " + user.getUsername() + " already exists!");
                 return "registration";
             }
-            user.setActive(true);
+//            user.setActive(true);
             user.setRoles(Collections.singleton(Role.USER));
             userRepository.save(user);
             return "redirect:login";

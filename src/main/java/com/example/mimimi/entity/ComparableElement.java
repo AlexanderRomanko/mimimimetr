@@ -10,7 +10,7 @@ public class ComparableElement {
     private Long id;
 
     private String name;
-    private String tag;
+//    private String tag;
     private String filename;
 
     @Column(nullable = false, columnDefinition = "int default 0")
@@ -23,11 +23,16 @@ public class ComparableElement {
     public ComparableElement() {
     }
 
-    public ComparableElement(String name, String tag, String filename) {
+    public ComparableElement(String name, String filename) {
         this.name = name;
-        this.tag = tag;
         this.filename = filename;
     }
+
+//    public ComparableElement(String name, String tag, String filename) {
+//        this.name = name;
+//        this.tag = tag;
+//        this.filename = filename;
+//    }
 
     public Long getId() {
         return id;
@@ -45,13 +50,13 @@ public class ComparableElement {
         this.name = name;
     }
 
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
+//    public String getTag() {
+//        return tag;
+//    }
+//
+//    public void setTag(String tag) {
+//        this.tag = tag;
+//    }
 
     public String getFilename() {
         return filename;

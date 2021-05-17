@@ -1,6 +1,7 @@
 package com.example.mimimi.service;
 
 import com.example.mimimi.entity.ComparableElement;
+import com.example.mimimi.repos.CollRepository;
 import com.example.mimimi.repos.ComparableElementRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,16 @@ import java.util.Random;
 public class VoteService {
 
     private final ComparableElementRepository comparableElementRepository;
+    private final CollRepository collRepository;
 
-    public VoteService(ComparableElementRepository comparableElementRepository) {
+    public VoteService(ComparableElementRepository comparableElementRepository, CollRepository collRepository) {
         this.comparableElementRepository = comparableElementRepository;
+        this.collRepository = collRepository;
     }
 
     public List<ComparableElement> getComparableElements(String tag) {
         String principal = SecurityContextHolder.getContext().getAuthentication().getName();//if it's better to move this field up
-        List<ComparableElement> comparableElements = comparableElementRepository.findByTag(tag); // Each time calls repository
+        List<ComparableElement> comparableElements = collRepository.findFirstByName(tag).getComparableElementList(); // Each time calls repository
         comparableElements.removeIf(comparableElement -> comparableElement.getVotedUsers().contains(principal));
         if (comparableElements.isEmpty()) return comparableElements;
         Random random = new Random();
@@ -45,7 +48,9 @@ public class VoteService {
     }
 
     public List<ComparableElement> getResults(String tag) {
-        return new ArrayList<>(comparableElementRepository.findByTagOrderByLikesDesc(tag));
+        List<ComparableElement> comparableElementList = new ArrayList<>(collRepository.findFirstByName(tag).getComparableElementList());
+        return comparableElementList;
+//        return new ArrayList<>(comparableElementRepository.findByTagOrderByLikesDesc(tag));
     }
 
 }

@@ -3,7 +3,6 @@ package com.example.mimimi.controller;
 import com.example.mimimi.entity.Role;
 import com.example.mimimi.entity.User;
 import com.example.mimimi.repos.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +17,12 @@ import java.util.stream.Collectors;
 @RequestMapping("user")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping
     public String userList(Model model) {
@@ -42,6 +45,7 @@ public class UserController {
         user.getRoles().clear();
         for (String key: form.keySet())
             if (roles.contains(key)) user.getRoles().add(Role.valueOf(key));
+        if (user.getRoles().isEmpty()) user.getRoles().add(Role.USER);
         userRepository.save(user);
         return "redirect:/user";
     }
