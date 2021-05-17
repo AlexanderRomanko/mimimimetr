@@ -76,11 +76,19 @@ public class CollectionService {
 
     }
 
-    public void createNewComparableElement(Map.Entry mapElement, String tag) {
-        ComparableElement comparableElement = new ComparableElement(mapElement.getValue().toString(), mapElement.getKey().toString());
-        comparableElementRepository.save(comparableElement);
-        Coll coll = new Coll(tag);
+    public void createNewComparableElement(ComparableElement comparableElement, String name) {
+        ComparableElement compElement = new ComparableElement(comparableElement.getName(), comparableElement.getFilename());
+        comparableElementRepository.save(compElement);
+        Coll coll = new Coll(name);
         collRepository.save(coll);
     }
 
+    public void createCollection(String name) {
+        Coll coll = new Coll(name);
+        collRepository.save(coll);
+    }
+
+    public Coll getCollection(String tag) {
+        return collRepository.findFirstByName(tag);
+    }
 }

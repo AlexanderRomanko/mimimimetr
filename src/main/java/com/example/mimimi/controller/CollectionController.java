@@ -1,6 +1,7 @@
 package com.example.mimimi.controller;
 
 import com.example.mimimi.entity.Coll;
+import com.example.mimimi.entity.ComparableElement;
 import com.example.mimimi.service.CollectionService;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,14 +57,16 @@ public class CollectionController {
         }
         File uploadDir = new File(uploadPath + "/" + tag);
         FileUtils.deleteDirectory(uploadDir);
-        collectionTemp.clear();/*??????????????????????*/
+        collectionService.createCollection(tag);
+//        collectionTemp.clear();/*??????????????????????*/
         return "redirect:/collection/" + tag;
     }
 
     @GetMapping("/collection/{tag}")
     public String editCollection(@PathVariable String tag, @RequestParam(required = false) String redirectError, Model model) {
         if (redirectError != null) model.addAttribute("redirectError", redirectError);
-        if (!collectionTemp.isEmpty()) model.addAttribute("collectionTemp", collectionTemp);
+        List<ComparableElement> comparableElements = collectionService.getCollection(tag).getComparableElementList();
+        if (!comparableElements.isEmpty()) model.addAttribute("collectionTemp", comparableElements);
         return "collectionEdit";
     }
 
@@ -71,23 +74,23 @@ public class CollectionController {
     public String editCollection(@PathVariable String tag, @RequestParam String name, @RequestParam("file") MultipartFile file,
                                  Model model) throws IOException {
         File uploadDir = new File(uploadPath + "/" + tag);
+        List<ComparableElement> comparableElements = collectionService.getCollection(tag).getComparableElementList();
         String filename = file.getOriginalFilename();
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
-        if (new File(uploadPath + File.pathSeparator + tag + "/" + filename).isFile() && collectionTemp.isEmpty()) {
+        if (new File(uploadPath + File.pathSeparator + tag + "/" + filename).isFile() && comparableElements.isEmpty()) {
             model.addAttribute("error", "File already exists, choose another.");
             return "redirect:/collection";
         }
         if (new File(uploadPath + "/" + tag + "/" + filename).isFile()) {
-//            model.addAttribute("collectionTemp", collectionTemp);
             model.addAttribute("error", "File already exists, choose another.");
             model.addAttribute("name", name);
-//            return "collectionEdit";
         }
         file.transferTo(new File(uploadPath + "/" + tag + "/" + filename));
-        collectionTemp.put(filename, name);
-        model.addAttribute("collectionTemp", collectionTemp);
+        collectionService.getCollection(tag).getComparableElementList()
+                .forEach(comparableElement -> collectionService.createNewComparableElement(comparableElement, name));
+        model.addAttribute("collectionTemp", comparableElements);
         return "collectionEdit";
     }
 
@@ -103,14 +106,13 @@ public class CollectionController {
 
     @PostMapping("/collection/{tag}/save")
     public String saveCollection(@PathVariable String tag, RedirectAttributes redirectError) {
-        if (collectionTemp.size() == 0) return "redirect:/collection/{tag}";
-        if (collectionTemp.size() % 2 > 0) {
+        if (collectionService.getCollection(tag).getComparableElementList().size() == 0)
+            return "redirect:/collection/{tag}";
+        if (collectionService.getCollection(tag).getComparableElementList().size() % 2 > 0) {
             redirectError.addAttribute("redirectError",
                     "The number of elements to compare must be a multiple of two.");
             return "redirect:/collection/{tag}";
         }
-        collectionTemp.entrySet().forEach(x -> collectionService.createNewComparableElement(x, tag));
-        collectionTemp.clear();
         return "redirect:/vote/chooseCollection";
     }
 }

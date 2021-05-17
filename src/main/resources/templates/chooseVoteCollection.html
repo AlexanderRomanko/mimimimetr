@@ -15,17 +15,17 @@
             <div id="carouselControls" class="carousel carousel-dark slide shadow col-lg-8 col-md-11 col-11" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img th:src="@{/img/} + ${collectionsList[0].name} + '/' + ${collectionsList[0].filename}" class="d-block w-100" alt="...">
-                        <div class="carousel-caption">
-                            <a th:href="'/vote/' + ${collectionsList[0].name}" class="btn btn-danger stretched-link" th:text="${collectionsList[0].tag}">Collection name</a>
-                        </div>
+                        <img th:src="@{/img/} + ${collectionsList[0].name} + '/' + ${collectionsList[0].comparableElementList[0].filename}" class="d-block w-100" alt="...">
+<!--                        <div class="carousel-caption">-->
+<!--                            <a th:href="'/vote/' + ${collectionsList[0].name}" class="btn btn-danger stretched-link" th:text="${collectionsList[0].tag}">Collection name</a>-->
+<!--                        </div>-->
                     </div>
-                    <div class="carousel-item" th:each="field : ${collectionsList}" th:if="${field != collectionsList[0]}">
-                        <img th:src="@{/img/} + ${field.name} + '/' + ${field.filename}" class="d-block w-100" alt="...">
-                        <div class="carousel-caption">
-                            <a th:href="'/vote/' + ${field.name}" class="btn btn-danger stretched-link" th:text="${field.name}">Collection name</a>
-                        </div>
-                    </div>
+<!--                    <div class="carousel-item" th:each="field : ${collectionsList}" th:if="${field != collectionsList[0]}">-->
+<!--                        <img th:src="@{/img/} + ${field.name} + '/' + ${field.filename}" class="d-block w-100" alt="...">-->
+<!--                        <div class="carousel-caption">-->
+<!--                            <a th:href="'/vote/' + ${field.name}" class="btn btn-danger stretched-link" th:text="${field.name}">Collection name</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselControls"  data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
