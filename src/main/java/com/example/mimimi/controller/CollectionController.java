@@ -1,5 +1,6 @@
 package com.example.mimimi.controller;
 
+import com.example.mimimi.entity.Coll;
 import com.example.mimimi.service.CollectionService;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +35,8 @@ public class CollectionController {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        List<Coll> collList = (List<Coll>) collectionService.getCollectionsList();
+        if (collList.size() == 0) return "redirect:/main";
         model.addAttribute("collectionsList", collectionService.getCollectionsList());
         return "chooseVoteCollection";
     }
