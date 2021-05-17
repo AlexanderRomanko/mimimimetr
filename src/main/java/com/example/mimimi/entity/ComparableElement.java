@@ -13,6 +13,10 @@ public class ComparableElement {
 //    private String tag;
     private String filename;
 
+    @ManyToOne
+    @CollectionTable(name = "coll", joinColumns = @JoinColumn(name = "id"))
+    private Coll coll;
+
     @Column(nullable = false, columnDefinition = "int default 0")
     private int likes;
 
@@ -23,9 +27,10 @@ public class ComparableElement {
     public ComparableElement() {
     }
 
-    public ComparableElement(String name, String filename) {
+    public ComparableElement(String name, String filename, Coll coll) {
         this.name = name;
         this.filename = filename;
+        this.coll = coll;
     }
 
 //    public ComparableElement(String name, String tag, String filename) {
@@ -80,5 +85,13 @@ public class ComparableElement {
 
     public void setVotedUsers(Set<String> votedUsers) {
         this.votedUsers = votedUsers;
+    }
+
+    public Coll getColl() {
+        return coll;
+    }
+
+    public void setColl(Coll coll) {
+        this.coll = coll;
     }
 }

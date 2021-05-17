@@ -88,9 +88,8 @@ public class CollectionController {
             model.addAttribute("name", name);
         }
         file.transferTo(new File(uploadPath + "/" + tag + "/" + filename));
-        collectionService.getCollection(tag).getComparableElementList()
-                .forEach(comparableElement -> collectionService.createNewComparableElement(comparableElement, name));
-        model.addAttribute("collectionTemp", comparableElements);
+        collectionService.createNewComparableElement(tag, name, filename);
+        model.addAttribute("collectionTemp", collectionService.getCollection(tag).getComparableElementList());
         return "collectionEdit";
     }
 

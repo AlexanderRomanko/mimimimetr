@@ -60,27 +60,26 @@ public class CollectionService {
     }
 
     public Iterable<Coll> getCollectionsList() {
-//        List<String> collectionsList = new ArrayList<>();
-//        for (Coll coll : collRepository.findAll()) {
-//            collectionsList.add(coll.getName());
-//        }
         return collRepository.findAll();
-//        return comparableElementRepository.findDistinctCatsWithDistinctTags();
     }
 
     public boolean collectionExists(String tag) {
         Coll coll =  collRepository.findFirstByName(tag);
         return coll != null;
-//        ComparableElement comparableElement = comparableElementRepository.findFirstByTag(tag);
-//        return comparableElement != null;
 
     }
 
-    public void createNewComparableElement(ComparableElement comparableElement, String name) {
-        ComparableElement compElement = new ComparableElement(comparableElement.getName(), comparableElement.getFilename());
-        comparableElementRepository.save(compElement);
-        Coll coll = new Coll(name);
+    public void createNewComparableElement(String tag, String name, String filename) {
+        Coll coll = new Coll(tag);
         collRepository.save(coll);
+
+        ComparableElement compElement = new ComparableElement();
+
+        compElement.setColl(coll);
+        compElement.setName(name);
+        compElement.setFilename(filename);
+        comparableElementRepository.save(compElement);
+
     }
 
     public void createCollection(String name) {
