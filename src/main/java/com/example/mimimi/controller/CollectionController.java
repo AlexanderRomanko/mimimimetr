@@ -21,8 +21,6 @@ public class CollectionController {
     @Value("${upload.path}")
     private String uploadPath;
 
-    Map<String, String> collectionTemp = new LinkedHashMap<>();/*??replace????????????????*/
-
     private final CollectionService collectionService;
 
     public CollectionController(CollectionService collectionService) {
@@ -43,74 +41,64 @@ public class CollectionController {
     }
 
     @GetMapping("/collection")
-    public String index(@RequestParam(required = false, defaultValue = "") String tag) {
-        if (tag.isEmpty()) return "collection";
+    public String index(@RequestParam(required = false, defaultValue = "") String collName) {
+        if (collName.isEmpty()) return "collection";
         return "collectionEdit";
     }
 
     @PostMapping("/collection")
-    public String indexCollection(@RequestParam String tag, Model model) throws IOException {
-        if (tag.isEmpty()) return "collection";
-        if (collectionService.collectionExists(tag)) {
+    public String indexCollection(@RequestParam String collName, Model model) throws IOException {
+        if (collName.isEmpty()) return "collection";
+        if (collectionService.collectionExists(collName)) {
             model.addAttribute("error", "Collection exists, please choose another name");
             return "collection";
         }
-        File uploadDir = new File(uploadPath + "/" + tag);
+        File uploadDir = new File(uploadPath + "/" + collName);
         FileUtils.deleteDirectory(uploadDir);
-        collectionService.createCollection(tag);
-//        collectionTemp.clear();/*??????????????????????*/
-        return "redirect:/collection/" + tag;
+        collectionService.createCollection(collName);
+        return "redirect:/collection/" + collName;
     }
 
-    @GetMapping("/collection/{tag}")
-    public String editCollection(@PathVariable String tag, @RequestParam(required = false) String redirectError, Model model) {
+    @GetMapping("/collection/{collName}")
+    public String editCollection(@PathVariable String collName, @RequestParam(required = false) String redirectError, Model model) {
         if (redirectError != null) model.addAttribute("redirectError", redirectError);
-        List<ComparableElement> comparableElements = collectionService.getCollection(tag).getComparableElementList();
-        if (!comparableElements.isEmpty()) model.addAttribute("collectionTemp", comparableElements);
+        model.addAttribute("comparableElements", collectionService.getCollection(collName).getComparableElementList());
         return "collectionEdit";
     }
 
-    @PostMapping("/collection/{tag}")
-    public String editCollection(@PathVariable String tag, @RequestParam String name, @RequestParam("file") MultipartFile file,
+    @PostMapping("/collection/{collName}")
+    public String editCollection(@PathVariable String collName, @RequestParam String name, @RequestParam("file") MultipartFile file,
                                  Model model) throws IOException {
-        File uploadDir = new File(uploadPath + "/" + tag);
-        List<ComparableElement> comparableElements = collectionService.getCollection(tag).getComparableElementList();
-        String filename = file.getOriginalFilename();
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
-        }
-        if (new File(uploadPath + File.pathSeparator + tag + "/" + filename).isFile() && comparableElements.isEmpty()) {
-            model.addAttribute("error", "File already exists, choose another.");
-            return "redirect:/collection";
-        }
-        if (new File(uploadPath + "/" + tag + "/" + filename).isFile()) {
+        if (new File(uploadPath + "/" + collName + "/" + file.getOriginalFilename()).isFile()) {
             model.addAttribute("error", "File already exists, choose another.");
             model.addAttribute("name", name);
+        } else {
+            file.transferTo(new File(uploadPath + "/" + collName + "/" + file.getOriginalFilename()));
+            collectionService.createNewComparableElement(name, file.getOriginalFilename(), collName);
         }
-        file.transferTo(new File(uploadPath + "/" + tag + "/" + filename));
-        collectionService.createNewComparableElement(tag, name, filename);
-        model.addAttribute("collectionTemp", collectionService.getCollection(tag).getComparableElementList());
+        model.addAttribute("comparableElements", collectionService.getCollection(collName).getComparableElementList());
+//        model.addAttribute("collName", collName);
         return "collectionEdit";
     }
 
-    @PostMapping("/collection/{tag}/remove")
-    public String deleteCat(@PathVariable String tag, @RequestParam("comparableElementKey") String comparableElementKey) throws IOException {
-        File file = new File(uploadPath + "/" + tag + "/" + comparableElementKey);
+    @PostMapping("/collection/{collName}/remove")
+    public String deleteElement(@PathVariable String collName, @RequestParam String filename) throws IOException {
+        File file = new File(uploadPath + "/" + collName + "/" + filename);
         file.delete();
-        File uploadDir = new File(uploadPath + "/" + tag);
-        if (Objects.requireNonNull(uploadDir.list()).length == 0) FileUtils.deleteDirectory(uploadDir);
-        collectionTemp.remove(comparableElementKey);
-        return "redirect:/collection/{tag}";
+//        File uploadDir = new File(uploadPath + "/" + collName);
+//        if (Objects.requireNonNull(uploadDir.list()).length == 0) FileUtils.deleteDirectory(uploadDir);
+        collectionService.remove(filename);
+        return "redirect:/collection/{collName}";
     }
 
-    @PostMapping("/collection/{tag}/save")
-    public String saveCollection(@PathVariable String tag, RedirectAttributes redirectError) {
-        if (collectionService.getCollection(tag).getComparableElementList().size() == 0)
-            return "redirect:/collection/{tag}";
-        if (collectionService.getCollection(tag).getComparableElementList().size() % 2 > 0) {
+    @PostMapping("/collection/{collName}/save")
+    public String saveCollection(@PathVariable String collName, RedirectAttributes redirectError) {
+        if (collectionService.getCollection(collName).getComparableElementList().size() == 0)
+            return "redirect:/collection/{collName}";
+        if (collectionService.getCollection(collName).getComparableElementList().size() % 2 > 0) {
             redirectError.addAttribute("redirectError",
                     "The number of elements to compare must be a multiple of two.");
-            return "redirect:/collection/{tag}";
+            return "redirect:/collection/{collName}";
         }
         return "redirect:/vote/chooseCollection";
     }

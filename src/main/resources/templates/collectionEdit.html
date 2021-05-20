@@ -11,8 +11,8 @@
 <div th:insert="~{parts/parts :: navbar} "></div>
 <div class="container-fluid" id="collectionEdit">
     <div class="row text-center align-items-center" style="height: 46vh">
-        <div class="display-3" style="color: white" th:text="'Collection &quot' + ${tag} + '&quot'">Collection name</div>
-        <form method="post" th:action="'/collection/' + ${tag}" enctype="multipart/form-data">
+        <div class="display-3" style="color: white" th:text="'Collection &quot' + ${collName} + '&quot'">Collection name</div>
+        <form method="post" th:action="'/collection/' + ${collName}" enctype="multipart/form-data">
             <div><label><input type="text" class="form-control" name="name" th:value="${name}" placeholder="Enter name" autofocus required></label></div>
             <div>
                 <label class="btn btn-secondary mt-3">Choose File<input type="file" name="file" hidden required></label>
@@ -20,22 +20,22 @@
             </div>
             <input type="submit" class="btn btn-danger mt-3" value="Add">
         </form>
-        <form th:action="'/collection/' + ${tag} + '/save'" method="post">
+        <form th:action="'/collection/' + ${collName} + '/save'" method="post">
             <h3 th:if="${redirectError}" th:text="${redirectError}" style="color: white"></h3>
             <button class="btn btn-secondary mt-3" type="submit">Save collection</button>
         </form>
     </div>
 </div>
 <div class="row align-items-center text-center" style="height: 45vh">
-    <div th:if="${#maps.isEmpty(collectionTemp)}" class="display-3">Collection is empty</div>
-    <div th:if="${!#maps.isEmpty(collectionTemp)}" class="card-group row-cols-1 row-cols-md-2 row-cols-xl-4 mt-3">
-        <div th:each="comparableElement : ${collectionTemp}">
+    <div th:if="${comparableElements.isEmpty()}" class="display-3">Collection is empty</div>
+    <div th:if="${!comparableElements.isEmpty()}" class="card-group row-cols-1 row-cols-md-2 row-cols-xl-4 mt-3">
+        <div th:each="comparableElement : ${comparableElements}">
             <div class="card shadow mb-3">
-                <img th:src="'/img/' + ${tag} + '/' + ${comparableElement.key}" class="card-img-top" alt="...">
+                <img th:src="'/img/' + ${collName} + '/' + ${comparableElement.filename}" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${comparableElement.value}">Name</h5>
-                    <form th:action="'/collection/' + ${tag} + '/remove'" method="post">
-                        <input type="hidden" name="comparableElementKey" th:value="${comparableElement.key}">
+                    <h5 class="card-title" th:text="${comparableElement.name}">Name</h5>
+                    <form th:action="'/collection/' + ${collName} + '/remove'" method="post">
+                        <input type="hidden" name="filename" th:value="${comparableElement.filename}">
                         <button class="btn btn-secondary" type="submit">Delete</button>
                     </form>
                 </div>

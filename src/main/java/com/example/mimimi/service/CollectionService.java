@@ -63,31 +63,28 @@ public class CollectionService {
         return collRepository.findAll();
     }
 
-    public boolean collectionExists(String tag) {
-        Coll coll =  collRepository.findFirstByName(tag);
-        return coll != null;
+    public boolean collectionExists(String collName) {
+        return collRepository.findFirstByName(collName) != null;
 
     }
 
-    public void createNewComparableElement(String tag, String name, String filename) {
-        Coll coll = new Coll(tag);
-        collRepository.save(coll);
-
-        ComparableElement compElement = new ComparableElement();
-
-        compElement.setColl(coll);
-        compElement.setName(name);
-        compElement.setFilename(filename);
-        comparableElementRepository.save(compElement);
-
+    public void createNewComparableElement(String name, String filename, String collName) {
+        comparableElementRepository.save(new ComparableElement(name, filename, collRepository.findFirstByName(collName)));
     }
 
-    public void createCollection(String name) {
-        Coll coll = new Coll(name);
-        collRepository.save(coll);
+    public void createCollection(String collName) {
+        collRepository.save(new Coll(collName));
+        File uploadDir = new File(uploadPath + "/" + collName);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
     }
 
-    public Coll getCollection(String tag) {
-        return collRepository.findFirstByName(tag);
+    public Coll getCollection(String collName) {
+        return collRepository.findFirstByName(collName);
+    }
+
+    public void remove(String filename) {
+        comparableElementRepository.deleteByFilename(filename);
     }
 }

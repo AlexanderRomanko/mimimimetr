@@ -8,9 +8,7 @@ public class ComparableElement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String name;
-//    private String tag;
     private String filename;
 
     @ManyToOne
@@ -33,12 +31,6 @@ public class ComparableElement {
         this.coll = coll;
     }
 
-//    public ComparableElement(String name, String tag, String filename) {
-//        this.name = name;
-//        this.tag = tag;
-//        this.filename = filename;
-//    }
-
     public Long getId() {
         return id;
     }
@@ -54,14 +46,6 @@ public class ComparableElement {
     public void setName(String name) {
         this.name = name;
     }
-
-//    public String getTag() {
-//        return tag;
-//    }
-//
-//    public void setTag(String tag) {
-//        this.tag = tag;
-//    }
 
     public String getFilename() {
         return filename;
