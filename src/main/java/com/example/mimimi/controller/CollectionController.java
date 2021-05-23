@@ -77,12 +77,11 @@ public class CollectionController {
             collectionService.createNewComparableElement(name, file.getOriginalFilename(), collName);
         }
         model.addAttribute("comparableElements", collectionService.getCollection(collName).getComparableElementList());
-//        model.addAttribute("collName", collName);
         return "collectionEdit";
     }
 
     @PostMapping("/collection/{collName}/remove")
-    public String deleteElement(@PathVariable String collName, @RequestParam String filename) throws IOException {
+    public String deleteElement(@PathVariable String collName, @RequestParam String filename) {
         File file = new File(uploadPath + "/" + collName + "/" + filename);
         file.delete();
 //        File uploadDir = new File(uploadPath + "/" + collName);

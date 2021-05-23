@@ -3,6 +3,7 @@ package com.example.mimimi.repos;
 import com.example.mimimi.entity.ComparableElement;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface ComparableElementRepository extends CrudRepository<ComparableEl
 //    @Query(value = "select * from comparable_element where id not in (select d2.id from comparable_element as d1 " +
 //            "inner join comparable_element as d2 on d2.tag=d1.tag where d2.id > d1.id)", nativeQuery = true)
 //    List<ComparableElement> findDistinctCatsWithDistinctTags();
-
+    @Transactional
     void deleteByFilename(String filename);
 
 }

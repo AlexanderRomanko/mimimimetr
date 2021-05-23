@@ -11,7 +11,10 @@
 <div th:insert="~{parts/parts :: navbar} "></div>
 <div class="container-fluid" id="collectionEdit">
     <div class="row text-center align-items-center" style="height: 46vh">
-        <div class="display-3" style="color: white" th:text="'Collection &quot' + ${collName} + '&quot'">Collection name</div>
+        <form method="get">
+            <h3 th:if="${redirectError}" th:text="${redirectError}" style="color: white"></h3>
+            <h3 th:if="!${redirectError}" class="display-3" style="color: white" th:text="'Collection &quot' + ${collName} + '&quot'">Collection name</h3>
+        </form>
         <form method="post" th:action="'/collection/' + ${collName}" enctype="multipart/form-data">
             <div><label><input type="text" class="form-control" name="name" th:value="${name}" placeholder="Enter name" autofocus required></label></div>
             <div>
@@ -21,7 +24,6 @@
             <input type="submit" class="btn btn-danger mt-3" value="Add">
         </form>
         <form th:action="'/collection/' + ${collName} + '/save'" method="post">
-            <h3 th:if="${redirectError}" th:text="${redirectError}" style="color: white"></h3>
             <button class="btn btn-secondary mt-3" type="submit">Save collection</button>
         </form>
     </div>
