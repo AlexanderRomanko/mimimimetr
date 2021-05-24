@@ -31,10 +31,7 @@ public class CollectionController {
 
     @GetMapping("/collection")
     public String index() {
-//    public String index(@RequestParam(required = false) String collName) {
-//        if (collName == null) return "collection";
         return "collection";
-//        else return "collectionEdit";
     }
 
     @PostMapping("/collection")
@@ -45,9 +42,7 @@ public class CollectionController {
             return "collection";
         } else {
             collectionService.createCollection(collName);
-            Coll coll = collectionService.getCollection(collName);
-            model.addAttribute("coll", coll);
-            return "redirect:/collection/" + coll.getId();
+            return "redirect:/collection/" + collectionService.getCollection(collName).getId();
         }
     }
 
@@ -55,40 +50,36 @@ public class CollectionController {
     public String editCollection(@PathVariable Coll coll, @RequestParam(required = false) String redirectError, Model model) {
         if (redirectError != null) model.addAttribute("redirectError", redirectError);
         model.addAttribute("comparableElements", coll.getComparableElementList());
-//        model.addAttribute("comparableElements", collectionService.getCollection(collName).getComparableElementList());
         return "collectionEdit";
     }
 
-    @PostMapping("/collection/{collName}")
-    public String editCollection(@PathVariable String collName, @RequestParam String name, @RequestParam("file") MultipartFile file,
-                                 Model model) throws IOException {
-        if (new File(uploadPath + "/" + collName + "/" + file.getOriginalFilename()).isFile()) {
+    @PostMapping("/collection/{coll}")
+    public String editCollection(@PathVariable Coll coll, @RequestParam String name, @RequestParam("file") MultipartFile file,
+                                 Model model) {
+        if (new File(uploadPath + "/" + coll.getName() + "/" + file.getOriginalFilename()).isFile()) {
             model.addAttribute("error", "File already exists, choose another.");
             model.addAttribute("name", name);
         } else {
-            file.transferTo(new File(uploadPath + "/" + collName + "/" + file.getOriginalFilename()));
-            collectionService.createNewComparableElement(name, file.getOriginalFilename(), collName);
+            collectionService.createNewComparableElement(name, file, coll.getName());
         }
-        model.addAttribute("comparableElements", collectionService.getCollection(collName).getComparableElementList());
+        model.addAttribute("comparableElements", coll.getComparableElementList());
         return "collectionEdit";
     }
 
-    @PostMapping("/collection/{collName}/remove")
-    public String deleteElement(@PathVariable String collName, @RequestParam String filename) {
-        File file = new File(uploadPath + "/" + collName + "/" + filename);
-        file.delete();
-        collectionService.remove(filename);
-        return "redirect:/collection/{collName}";
+    @PostMapping("/collection/{coll}/remove")
+    public String deleteElement(@PathVariable Coll coll, @RequestParam String filename) {
+        collectionService.remove(coll, filename);
+        return "redirect:/collection/{coll}";
     }
 
-    @PostMapping("/collection/{collName}/save")
-    public String saveCollection(@PathVariable String collName, RedirectAttributes redirectError) {
-        if (collectionService.getCollection(collName).getComparableElementList().size() == 0)
-            return "redirect:/collection/{collName}";
-        if (collectionService.getCollection(collName).getComparableElementList().size() % 2 > 0) {
+    @PostMapping("/collection/{coll}/save")
+    public String saveCollection(@PathVariable Coll coll, RedirectAttributes redirectError) {
+        if (coll.getComparableElementList().size() == 0)
+            return "redirect:/collection/{coll}";
+        if (coll.getComparableElementList().size() % 2 > 0) {
             redirectError.addAttribute("redirectError",
                     "The number of elements to compare must be a multiple of two.");
-            return "redirect:/collection/{collName}";
+            return "redirect:/collection/{coll}";
         }
         return "redirect:/vote/chooseCollection";
     }
@@ -100,7 +91,7 @@ public class CollectionController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "redirect:/main";
+        return "redirect:/collection";
     }
 
     @GetMapping("/vote/chooseCollection")

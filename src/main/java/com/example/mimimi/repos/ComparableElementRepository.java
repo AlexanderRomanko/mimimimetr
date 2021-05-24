@@ -1,5 +1,6 @@
 package com.example.mimimi.repos;
 
+import com.example.mimimi.entity.Coll;
 import com.example.mimimi.entity.ComparableElement;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -24,6 +25,6 @@ public interface ComparableElementRepository extends CrudRepository<ComparableEl
 //            "inner join comparable_element as d2 on d2.tag=d1.tag where d2.id > d1.id)", nativeQuery = true)
 //    List<ComparableElement> findDistinctCatsWithDistinctTags();
     @Transactional
-    void deleteByFilename(String filename);
+    void deleteByCollAndFilename(Coll col, String filename);
 
 }

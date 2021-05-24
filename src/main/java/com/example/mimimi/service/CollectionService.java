@@ -7,6 +7,7 @@ import com.example.mimimi.repos.ComparableElementRepository;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class CollectionService {
             File dir = new File(uploadPath + "/" + coll.getName());
             if (!dir.exists()) {
                 collRepository.delete(coll);
-            } else if (coll.getComparableElementList().size() % 2 > 0) {
+            } else if (coll.getComparableElementList().size() % 2 > 0 || coll.getComparableElementList().isEmpty()) {
                 FileUtils.deleteDirectory(dir);
                 collRepository.delete(coll);
             }
@@ -67,8 +68,13 @@ public class CollectionService {
 
     }
 
-    public void createNewComparableElement(String name, String filename, String collName) {
-        comparableElementRepository.save(new ComparableElement(name, filename, collRepository.findFirstByName(collName)));
+    public void createNewComparableElement(String name, MultipartFile file, String collName) {
+        try {
+            file.transferTo(new File(uploadPath + "/" + collName + "/" + file.getOriginalFilename()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        comparableElementRepository.save(new ComparableElement(name, file.getOriginalFilename(), collRepository.findFirstByName(collName)));
     }
 
     public void createCollection(String collName) {
@@ -86,7 +92,9 @@ public class CollectionService {
         return collRepository.findFirstByName(collName);
     }
 
-    public void remove(String filename) {
-        comparableElementRepository.deleteByFilename(filename);
+    public void remove(Coll coll, String filename) {
+        File file = new File(uploadPath + "/" + coll.getName() + "/" + filename);
+        file.delete();
+        comparableElementRepository.deleteByCollAndFilename(coll, filename);
     }
 }
