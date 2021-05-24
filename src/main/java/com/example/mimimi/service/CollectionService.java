@@ -59,10 +59,6 @@ public class CollectionService {
         }
     }
 
-    public Iterable<Coll> getCollectionsList() {
-        return collRepository.findAll();
-    }
-
     public boolean collectionExists(String collName) {
         return collRepository.findFirstByName(collName) != null;
 

@@ -1,5 +1,6 @@
 package com.example.mimimi.service;
 
+import com.example.mimimi.entity.Coll;
 import com.example.mimimi.entity.ComparableElement;
 import com.example.mimimi.repos.CollRepository;
 import com.example.mimimi.repos.ComparableElementRepository;
@@ -21,6 +22,11 @@ public class VoteService {
         this.comparableElementRepository = comparableElementRepository;
         this.collRepository = collRepository;
     }
+
+    public Iterable<Coll> getCollectionsList() {
+        return collRepository.findAll();
+    }
+
 
     public List<ComparableElement> getComparableElements(String tag) {
         String principal = SecurityContextHolder.getContext().getAuthentication().getName();//if it's better to move this field up

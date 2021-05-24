@@ -1,5 +1,6 @@
 package com.example.mimimi.controller;
 
+import com.example.mimimi.entity.Coll;
 import com.example.mimimi.entity.ComparableElement;
 import com.example.mimimi.service.VoteService;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,15 @@ public class VoteController {
 
     public VoteController(VoteService voteService) {
         this.voteService = voteService;
+    }
+
+    @GetMapping("/chooseCollection")
+    public String showCollectionsList(Model model) {
+        Iterable<Coll> coll = voteService.getCollectionsList();
+        if (!coll.iterator().hasNext())
+            return "redirect:/main";
+        model.addAttribute("coll", coll);
+        return "chooseVoteCollection";
     }
 
     @GetMapping("/{tag}")
