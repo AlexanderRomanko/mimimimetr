@@ -13,8 +13,12 @@ import java.util.Collections;
 
 @Controller
 public class RegistrationController {
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
+
+    public RegistrationController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("registration")
     public String registration() {
@@ -33,8 +37,8 @@ public class RegistrationController {
                 model.addAttribute("message", "User " + user.getUsername() + " already exists!");
                 return "registration";
             }
-//            user.setActive(true);
             user.setRoles(Collections.singleton(Role.USER));
+//            user.setRoles(Collections.singleton(Role.ADMIN));
             userRepository.save(user);
             return "redirect:login";
         }

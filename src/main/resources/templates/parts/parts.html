@@ -32,6 +32,11 @@
                     <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
                         <a class="nav-link" href="/user">User list</a>
                     </li>
+                    <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                        <form th:action="@{/collection/delete}" method="post" class="text-center ms-auto">
+                            <button class="btn btn-outline-danger" type="submit">Delete wrong collections</button>
+                        </form>
+                    </li>
                 </ul>
                 <form th:action="@{/logout}" method="post" class="text-center ms-auto">
                     <button class="btn btn-outline-secondary" type="submit">Log out</button>

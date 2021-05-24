@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class CollectionService {
@@ -30,33 +28,34 @@ public class CollectionService {
 
 
 
-    public void removeOddNumberOfFilesCollections() throws IOException {
+    public void deleteWrongCollections() throws IOException {
         /*
-         * Remove collection from repository if the collection consists of an odd number of files
+         * Delete useless folders and collection from repository if the collection consists of an odd number of files
          * Checking by file numbers in each folder
          */
-//        File upload = new File(uploadPath);
-//        for (String file : upload.list()) {
-//            File dir = new File(uploadPath + "/" + file);
-//            if (dir.list().length % 2 > 0) {
-//                FileUtils.deleteDirectory(dir);
-//                comparableElementRepository.deleteByTag(file);
-//            }
-//        }
-
+        for (String file : Objects.requireNonNull(new File(uploadPath).list())) {
+            File dir = new File(uploadPath + "/" + file);
+            Coll coll = collRepository.findFirstByName(file);
+            if (coll == null) {
+                FileUtils.deleteDirectory(dir);
+            } else if (Objects.requireNonNull(dir.list()).length % 2 > 0 || Objects.requireNonNull(dir.list()).length == 0) {
+                FileUtils.deleteDirectory(dir);
+                collRepository.delete(coll);
+            }
+        }
         /*
-         * Remove collection from repository if the collection consists of an odd number of files
-         * Checking by file numbers in each collection in repository
+         * Delete  useless folders and collection from repository if the collection consists of an odd number of files
+         * Checking by comparable_element numbers in each coll in CollRepository
          */
-//        List<String> distinctTagsList = new ArrayList<>();
-//        comparableElementRepository.findDistinctCatsWithDistinctTags().forEach(x -> distinctTagsList.add(x.getTag()));
-//        for (String tag : distinctTagsList) {
-//            if (comparableElementRepository.findByTag(tag).size() % 2 > 0) {
-//                File uploadDir = new File(uploadPath + "/" + tag);
-//                FileUtils.deleteDirectory(uploadDir);
-//                comparableElementRepository.deleteByTag(tag);
-//            }
-//        }
+        for (Coll coll : collRepository.findAll()) {
+            File dir = new File(uploadPath + "/" + coll.getName());
+            if (!dir.exists()) {
+                collRepository.delete(coll);
+            } else if (coll.getComparableElementList().size() % 2 > 0) {
+                FileUtils.deleteDirectory(dir);
+                collRepository.delete(coll);
+            }
+        }
     }
 
     public Iterable<Coll> getCollectionsList() {
@@ -75,9 +74,12 @@ public class CollectionService {
     public void createCollection(String collName) {
         collRepository.save(new Coll(collName));
         File uploadDir = new File(uploadPath + "/" + collName);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
+        try {
+            FileUtils.deleteDirectory(uploadDir);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        uploadDir.mkdirs();
     }
 
     public Coll getCollection(String collName) {
