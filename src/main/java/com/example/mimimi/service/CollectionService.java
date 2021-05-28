@@ -34,9 +34,9 @@ public class CollectionService {
          * Delete useless folders and collection from repository if the collection consists of an odd number of files
          * Checking by file numbers in each folder
          */
-        for (String file : Objects.requireNonNull(new File(uploadPath).list())) {
-            File dir = new File(uploadPath + "/" + file);
-            Coll coll = collRepository.findFirstByName(file);
+        for (String collName : Objects.requireNonNull(new File(uploadPath).list())) {
+            File dir = new File(uploadPath + "/" + collName);
+            Coll coll = collRepository.findFirstByName(collName);
             if (coll == null) {
                 FileUtils.deleteDirectory(dir);
             } else if (Objects.requireNonNull(dir.list()).length % 2 > 0 || Objects.requireNonNull(dir.list()).length == 0) {

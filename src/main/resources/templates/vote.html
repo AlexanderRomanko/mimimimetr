@@ -10,12 +10,12 @@
 <body>
 <div th:insert="~{parts/parts :: navbar} "></div>
 <div class="container-fluid text-center" id="vote">
-    <form method="post" th:action="'/vote/' + ${comparableElement1.tag}">
+    <form method="post" th:action="'/vote/' + ${comparableElement1.coll.id}">
         <div class="display-3 pt-3 pt-md-5" style="color: white">Which one do you like better?</div>
         <div class="row justify-content-center mx-0 mt-3 mt-md-5" id="image">
             <div class="col-6 col-md-5 col-xl-4">
                 <div class="card h-100 shadow mx-md-3">
-                    <img th:src="@{/img/} + ${comparableElement1.tag} + '/' + ${comparableElement1.filename}" class="card-img-top" alt="...">
+                    <img th:src="@{/img/} + ${comparableElement1.coll.name} + '/' + ${comparableElement1.filename}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <button type="submit" class="btn btn-secondary" name="button1" th:text="${comparableElement1.name}">First comparableElement name</button>
                     </div>
@@ -23,7 +23,7 @@
             </div>
             <div class="col-6 col-md-5 col-xl-4">
                 <div class="card h-100 shadow mx-md-3">
-                    <img th:src="@{/img/} + ${comparableElement2.tag} + '/' + ${comparableElement2.filename}" class="card-img-top" alt="...">
+                    <img th:src="@{/img/} + ${comparableElement2.coll.name} + '/' + ${comparableElement2.filename}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <button type="submit" class="btn btn-secondary" th:text="${comparableElement2.name}">Second comparableElement name</button>
                     </div>

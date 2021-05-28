@@ -17,7 +17,7 @@
                     <div class="carousel-item active">
                         <img th:src="@{/img/} + ${coll[0].name} + '/' + ${coll[0].comparableElementList[0].filename}" class="d-block w-100" alt="...">
                         <div class="carousel-caption">
-                            <a th:href="'/vote/' + ${coll[0].name}" class="btn btn-danger stretched-link" th:text="${coll[0].name}">Collection name</a>
+                            <a th:href="'/vote/' + ${coll[0].id}" class="btn btn-danger stretched-link" th:text="${coll[0].name}">Collection name</a>
                         </div>
                     </div>
                     <div class="carousel-item" th:each="field : ${coll}" th:if="${field != coll[0]}">

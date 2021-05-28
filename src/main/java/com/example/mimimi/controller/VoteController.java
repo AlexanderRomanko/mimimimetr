@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -28,26 +29,26 @@ public class VoteController {
         return "chooseVoteCollection";
     }
 
-    @GetMapping("/{tag}")
-    public String showComparableElements(@PathVariable String tag, Model model) {
-        List<ComparableElement> twoComparableElements = voteService.getComparableElements(tag);
+    @GetMapping("/{coll}")
+    public String showComparableElements(@PathVariable Coll coll, Principal principal, Model model) {
+        List<ComparableElement> twoComparableElements = voteService.getComparableElements(coll, principal);
         if (twoComparableElements.isEmpty())
-            return "redirect:/vote/{tag}/results";
+            return "redirect:/vote/{coll}/results";
         model.addAttribute("comparableElement1", twoComparableElements.get(0));
         model.addAttribute("comparableElement2", twoComparableElements.get(1));
         return "vote";
     }
 
-    @PostMapping("/{tag}")
-    public String vote(@PathVariable String tag, @RequestParam("comparableElement1Id") ComparableElement comparableElement1, @RequestParam("comparableElement2Id") ComparableElement comparableElement2,
-                       @RequestParam(required = false) String button1) {
-        voteService.vote(comparableElement1, comparableElement2, button1);
-        return "redirect:/vote/{tag}";
+    @PostMapping("/{coll}")
+    public String vote(@PathVariable Coll coll, @RequestParam("comparableElement1Id") ComparableElement comparableElement1, @RequestParam("comparableElement2Id") ComparableElement comparableElement2,
+                       @RequestParam(required = false) String button1, Principal principal) {
+        voteService.vote(comparableElement1, comparableElement2, button1, principal);
+        return "redirect:/vote/{coll}";
     }
 
-    @GetMapping("{tag}/results")
-    public String showResults(@PathVariable String tag, Model model) {
-        model.addAttribute("votedList", voteService.getResults(tag));
+    @GetMapping("{coll}/results")
+    public String showResults(@PathVariable Coll coll, Model model) {
+        model.addAttribute("votedList", voteService.getResults(coll));
         return "results";
     }
 
