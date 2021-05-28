@@ -7,9 +7,7 @@ import com.example.mimimi.repos.ComparableElementRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 
 @Service
@@ -34,7 +32,7 @@ public class VoteService {
     public List<ComparableElement> getComparableElements(Coll coll, Principal principal) {
         List<ComparableElement> comparableElements = coll.getComparableElementList();
         comparableElements.removeIf(comparableElement ->
-                comparableElement.getVotedUsers().contains(String.valueOf(principal)));
+                comparableElement.getVotedUsers().contains(principal.getName()));
         if (comparableElements.isEmpty()) return comparableElements;
         Random random = new Random();
         List<ComparableElement> twoComparableElements = new ArrayList<>();
@@ -50,14 +48,15 @@ public class VoteService {
                      String button1, Principal principal) {
         if (button1 != null) comparableElement1.setLikes(comparableElement1.getLikes() + 1);
         else comparableElement2.setLikes(comparableElement2.getLikes() + 1);
-        comparableElement1.getVotedUsers().add(String.valueOf(principal));
-        comparableElement2.getVotedUsers().add(String.valueOf(principal));
+        comparableElement1.addVotedUser(principal.getName());
+        comparableElement2.addVotedUser(principal.getName());
         comparableElementRepository.save(comparableElement1);
         comparableElementRepository.save(comparableElement2);
     }
 
     public List<ComparableElement> getResults(Coll coll) {
-        return new ArrayList<>(collRepository.findFirstById(coll.getId()).getComparableElementList());
+//        coll.getComparableElementList().sort(Comparator.comparing(ComparableElement::getLikes));
+        return new ArrayList<>(coll.getComparableElementList());
 //        return new ArrayList<>(comparableElementRepository.findByTagOrderByLikesDesc(tag));
     }
 

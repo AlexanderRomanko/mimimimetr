@@ -19,7 +19,7 @@ public class ComparableElement {
     private int likes;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "voted_users", joinColumns = @JoinColumn(name = "voted_users_id"))
+    @CollectionTable(name = "voted_users", joinColumns = @JoinColumn(name = "comparable_element_id"))
     private Set<String> votedUsers;
 
     public ComparableElement() {
@@ -69,6 +69,10 @@ public class ComparableElement {
 
     public void setVotedUsers(Set<String> votedUsers) {
         this.votedUsers = votedUsers;
+    }
+
+    public void addVotedUser(String votedUser) {
+        this.votedUsers.add(votedUser);
     }
 
     public Coll getColl() {
