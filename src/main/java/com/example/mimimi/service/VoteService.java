@@ -55,7 +55,7 @@ public class VoteService {
     }
 
     public List<ComparableElement> getResults(Coll coll) {
-//        coll.getComparableElementList().sort(Comparator.comparing(ComparableElement::getLikes));
+        coll.getComparableElementList().sort(Comparator.comparing(ComparableElement::getLikes).reversed());
         return new ArrayList<>(coll.getComparableElementList());
 //        return new ArrayList<>(comparableElementRepository.findByTagOrderByLikesDesc(tag));
     }
