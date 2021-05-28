@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -54,10 +55,10 @@ public class VoteService {
         comparableElementRepository.save(comparableElement2);
     }
 
-    public List<ComparableElement> getResults(Coll coll) {
+    public List<ComparableElement> getResults(Coll coll) { //or if it's better to use SQL???
         coll.getComparableElementList().sort(Comparator.comparing(ComparableElement::getLikes).reversed());
-        return new ArrayList<>(coll.getComparableElementList());
-//        return new ArrayList<>(comparableElementRepository.findByTagOrderByLikesDesc(tag));
+        return new ArrayList<>(coll.getComparableElementList()).stream().limit(10).collect(Collectors.toList());
+//        return new ArrayList<>(comparableElementRepository.findByTagOrderByLikesDesc(coll.getName()));
     }
 
 }
