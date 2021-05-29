@@ -8,10 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Collections;
 
 @Controller
+@RequestMapping("/registration")
 public class RegistrationController {
 
     private final UserRepository userRepository;
@@ -20,12 +22,12 @@ public class RegistrationController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("registration")
+    @GetMapping
     public String registration() {
         return "registration";
     }
 
-    @PostMapping("registration")
+    @PostMapping
     public String addUser(User user, Model model) {
         if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
             model.addAttribute("message", "Please fill out all fields!");
@@ -38,7 +40,6 @@ public class RegistrationController {
                 return "registration";
             }
             user.setRoles(Collections.singleton(Role.USER));
-//            user.setRoles(Collections.singleton(Role.ADMIN));
             userRepository.save(user);
             return "redirect:login";
         }
