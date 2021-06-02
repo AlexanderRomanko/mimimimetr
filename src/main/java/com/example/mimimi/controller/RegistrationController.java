@@ -37,12 +37,7 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("message", "Please fill out all fields!");
             return "registration";
-        }
-//        if (userDto.getUsername().isEmpty() || userDto.getPassword().isEmpty()) {
-//            model.addAttribute("message", "Please fill out all fields!");
-//            return "registration";
-//        }
-        else {
+        } else {
             User userFromDb = userRepository.findByUsername(userDto.getUsername());
             if (userFromDb != null) {
                 model.addAttribute("usernameError", "User " + userDto.getUsername() + " already exists!");
