@@ -11,8 +11,8 @@
 <div class="text-center mt-5 my-4">
     <h2>Please log in to continue.</h2>
     <form th:action="@{/login}" method="post">
-        <div><label><input type="text" class="form-control mt-2" name="username" placeholder="Enter username" required autofocus></label></div>
-        <div><label><input type="password" class="form-control mt-2" name="password" placeholder="Enter password" required></label></div>
+        <div><label><input type="text" class="form-control mt-2" name="username" placeholder="Enter username" autofocus></label></div>
+        <div><label><input type="password" class="form-control mt-2" name="password" placeholder="Enter password"></label></div>
         <div><input type="submit" class="btn btn-danger mt-2" value="Log in"></div>
         <div><a href="/registration" type="button" class="btn btn-secondary mt-2">Sign up</a></div>
     </form>

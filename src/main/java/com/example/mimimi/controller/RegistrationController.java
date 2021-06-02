@@ -7,10 +7,12 @@ import com.example.mimimi.repos.UserRepository;
 import com.example.mimimi.service.ConverterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.Collections;
 
 @Controller
@@ -31,15 +33,19 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String addUser(UserDto userDto, Model model) {
-        if (userDto.getUsername().isEmpty() || userDto.getPassword().isEmpty()) {
+    public String addUser(@Valid UserDto userDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("message", "Please fill out all fields!");
             return "registration";
         }
+//        if (userDto.getUsername().isEmpty() || userDto.getPassword().isEmpty()) {
+//            model.addAttribute("message", "Please fill out all fields!");
+//            return "registration";
+//        }
         else {
             User userFromDb = userRepository.findByUsername(userDto.getUsername());
             if (userFromDb != null) {
-                model.addAttribute("message", "User " + userDto.getUsername() + " already exists!");
+                model.addAttribute("usernameError", "User " + userDto.getUsername() + " already exists!");
                 return "registration";
             }
             userDto.setRoles(Collections.singleton(Role.USER));

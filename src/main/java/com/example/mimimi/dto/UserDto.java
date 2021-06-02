@@ -2,12 +2,16 @@ package com.example.mimimi.dto;
 
 import com.example.mimimi.entity.Role;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 public class UserDto {
 
     private Long id;
+    @NotEmpty(message = "rrr")
     private String username;
+    @NotBlank(message = "sss")
     private String password;
     private Set<Role> roles;
 

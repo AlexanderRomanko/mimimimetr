@@ -11,8 +11,8 @@
 <div class="text-center mt-5 my-4">
     <h2>Create a new account.</h2>
     <form th:action="@{/registration}" method="post">
-        <div><label><input type="text" class="form-control mt-2" name="username" placeholder="Enter username" required autofocus/></label></div>
-        <div><label><input type="password" class="form-control mt-2" name="password" placeholder="Enter password" required/></label></div>
+        <div><label><input type="text" class="form-control mt-2" name="username" placeholder="Enter username" autofocus/></label></div>
+        <div><label><input type="password" class="form-control mt-2" name="password" placeholder="Enter password"/></label></div>
         <div><input type="submit" class="btn btn-danger mt-2" value="Sign up"></div>
         <div><a href="/login" type="button" class="btn btn-secondary mt-2">Log in</a></div>
     </form>
