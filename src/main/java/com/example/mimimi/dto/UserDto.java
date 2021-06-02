@@ -9,9 +9,9 @@ import java.util.Set;
 public class UserDto {
 
     private Long id;
-    @NotEmpty(message = "rrr")
+    @NotEmpty
     private String username;
-    @NotBlank(message = "sss")
+    @NotBlank
     private String password;
     private Set<Role> roles;
 
