@@ -24,10 +24,6 @@ public class UserService implements UserDetailsService {
                 () -> new UsernameNotFoundException("User Not Found"));
     }
 
-    public boolean ifUserExists(String username) {
-        return userRepository.findByUsername(username) != null;
-    }
-
     public void saveUser(UserDto userDto) {
         userRepository.save(converterService.convertToEntity(userDto));
     }

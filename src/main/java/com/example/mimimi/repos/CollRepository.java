@@ -4,6 +4,7 @@ import com.example.mimimi.entity.Coll;
 import org.springframework.data.repository.CrudRepository;
 
 public interface CollRepository extends CrudRepository<Coll, Long> {
+
     Coll findFirstByName(String collName);
-    Coll findFirstById(Long id);
+
 }

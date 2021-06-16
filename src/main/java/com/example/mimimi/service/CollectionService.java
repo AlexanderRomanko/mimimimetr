@@ -83,10 +83,6 @@ public class CollectionService {
         return coll;
     }
 
-    public Coll getCollection(String collName) {
-        return collRepository.findFirstByName(collName);
-    }
-
     public void remove(Coll coll, String filename) {
         File file = new File(uploadPath + "/" + coll.getName() + "/" + filename);
         file.delete();

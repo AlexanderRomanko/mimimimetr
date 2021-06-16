@@ -1,6 +1,5 @@
 package com.example.mimimi.controller;
 
-import com.example.mimimi.dto.CollDto;
 import com.example.mimimi.entity.Coll;
 import com.example.mimimi.service.CollectionService;
 import com.example.mimimi.service.ConverterService;

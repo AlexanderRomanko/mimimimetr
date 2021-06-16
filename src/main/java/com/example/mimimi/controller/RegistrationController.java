@@ -2,6 +2,7 @@ package com.example.mimimi.controller;
 
 import com.example.mimimi.dto.UserDto;
 import com.example.mimimi.entity.Role;
+import com.example.mimimi.repos.UserRepository;
 import com.example.mimimi.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +19,11 @@ import java.util.Collections;
 public class RegistrationController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public RegistrationController(UserService userService) {
+    public RegistrationController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping
@@ -36,7 +39,7 @@ public class RegistrationController {
             model.addAttribute("message", message);
             return "registration";
         }
-        if (userService.ifUserExists(userDto.getUsername())) {
+        if (userRepository.findUserByUsername(userDto.getUsername()).isPresent()) {
             message = "User " + userDto.getUsername() + " already exists!";
             model.addAttribute("message", message);
             return "registration";
