@@ -53,7 +53,8 @@ public class CollectionController {
     public String editCollection(@PathVariable Coll coll,
                                  @RequestParam(required = false) String redirectError, Model model) {
         if (redirectError != null) model.addAttribute("redirectError", redirectError);
-        model.addAttribute("comparableElements", coll.getComparableElementList());
+        model.addAttribute("comparableElements",
+                converterService.convertToDto(coll).getComparableElementList());
         return "collectionEdit";
     }
 
@@ -79,9 +80,8 @@ public class CollectionController {
 
     @PostMapping("/{coll}/save")
     public String saveCollection(@PathVariable Coll coll, RedirectAttributes redirectError) {
-        if (coll.getComparableElementList().size() == 0)
-            return "redirect:/collection/{coll}";
-        if (coll.getComparableElementList().size() % 2 > 0) {
+        int collSize = coll.getComparableElementList().size();
+        if (collSize == 0 || collSize % 2 > 0) {
             redirectError.addAttribute("redirectError",
                     "The number of elements must be a multiple of two.");
             return "redirect:/collection/{coll}";

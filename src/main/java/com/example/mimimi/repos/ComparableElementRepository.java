@@ -25,6 +25,8 @@ public interface ComparableElementRepository extends CrudRepository<ComparableEl
 //            "inner join comparable_element as d2 on d2.tag=d1.tag where d2.id > d1.id)", nativeQuery = true)
 //    List<ComparableElement> findDistinctCatsWithDistinctTags();
     @Transactional
-    void deleteByCollAndFilename(Coll col, String filename);
+    void deleteByCollAndFilename(Coll coll, String filename);
+
+    void deleteAllByColl(String collName);
 
 }
