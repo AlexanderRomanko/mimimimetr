@@ -12,7 +12,7 @@
 <div class="d-flex justify-content-center align-items-center" id="collection">
     <form method="post" class="text-center" th:action="'/collection'">
         <div class="display-3" style="color: white">Enter new collection name</div>
-        <div><label><input type="text" class="form-control mt-2" th:name="collName" placeholder="Collection name" autofocus required></label></div>
+        <div><label><input type="text" class="form-control mt-2" th:name="collName" placeholder="Collection name" autofocus></label></div>
         <div><input type="submit" class="btn btn-danger mt-4" value="Continue"></div>
         <div th:if="${error}">
             <h3 class="mt-3" style="color: white" th:text="${error}"></h3>

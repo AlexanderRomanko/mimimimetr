@@ -1,5 +1,9 @@
 package com.example.mimimi.entity;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -19,7 +23,9 @@ public class ComparableElement {
     private int likes;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "voted_users", joinColumns = @JoinColumn(name = "comparable_element_id"))
+    @CollectionTable(name = "voted_users")
+    @JoinColumn(name = "comparable_element_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<String> votedUsers;
 
     public ComparableElement() {

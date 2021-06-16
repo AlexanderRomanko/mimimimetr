@@ -4,8 +4,10 @@ import com.example.mimimi.entity.Coll;
 import com.example.mimimi.entity.ComparableElement;
 import com.example.mimimi.repos.CollRepository;
 import com.example.mimimi.repos.ComparableElementRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,6 +15,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class VoteService {
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     private final ComparableElementRepository comparableElementRepository;
     private final CollRepository collRepository;
@@ -25,7 +30,10 @@ public class VoteService {
     public Iterable<Coll> getCollectionsList() {
         List<Coll> collList = (List<Coll>) collRepository.findAll();
         collList.removeIf(coll ->
-                coll.getComparableElementList().isEmpty() || coll.getComparableElementList().size() % 2 > 0);
+            coll.getComparableElementList().isEmpty() ||
+            coll.getComparableElementList().size() % 2 > 0 ||
+            Objects.requireNonNull(new File(uploadPath + "/" + coll.getName()).list()).length % 2 > 0 ||
+            Objects.requireNonNull(new File(uploadPath + "/" + coll.getName()).list()).length == 0);
         return collList;
     }
 

@@ -59,11 +59,6 @@ public class CollectionService {
         }
     }
 
-    public boolean collectionExists(String collName) {
-        return collRepository.findFirstByName(collName) != null;
-
-    }
-
     public void createNewComparableElement(String name, MultipartFile file, String collName) {
         try {
             file.transferTo(new File(uploadPath + "/" + collName + "/" + file.getOriginalFilename()));
@@ -73,8 +68,9 @@ public class CollectionService {
         comparableElementRepository.save(new ComparableElement(name, file.getOriginalFilename(), collRepository.findFirstByName(collName)));
     }
 
-    public void createCollection(String collName) {
-        collRepository.save(new Coll(collName));
+    public Coll createCollection(String collName) {
+        Coll coll = new Coll(collName);
+        collRepository.save(coll);
         File uploadDir = new File(uploadPath + "/" + collName);
         try {
             FileUtils.deleteDirectory(uploadDir);
@@ -82,6 +78,7 @@ public class CollectionService {
             e.printStackTrace();
         }
         uploadDir.mkdirs();
+        return coll;
     }
 
     public Coll getCollection(String collName) {
