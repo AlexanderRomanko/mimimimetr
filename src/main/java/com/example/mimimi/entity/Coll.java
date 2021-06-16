@@ -1,6 +1,7 @@
 package com.example.mimimi.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -9,6 +10,7 @@ public class Coll {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(unique = true)
+    @NotBlank
     private String name;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "coll_id")
