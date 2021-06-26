@@ -3,7 +3,7 @@ package com.example.mimimi.controller;
 import com.example.mimimi.dto.UserDto;
 import com.example.mimimi.entity.Role;
 import com.example.mimimi.repos.UserRepository;
-import com.example.mimimi.service.UserService;
+import com.example.mimimi.service.ConverterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,12 +18,12 @@ import java.util.Collections;
 @RequestMapping("/registration")
 public class RegistrationController {
 
-    private final UserService userService;
     private final UserRepository userRepository;
+    private final ConverterService converterService;
 
-    public RegistrationController(UserService userService, UserRepository userRepository) {
-        this.userService = userService;
+    public RegistrationController(UserRepository userRepository, ConverterService converterService) {
         this.userRepository = userRepository;
+        this.converterService = converterService;
     }
 
     @GetMapping
@@ -33,7 +33,7 @@ public class RegistrationController {
 
     @PostMapping
     public String addUser(@Valid UserDto userDto, BindingResult bindingResult, Model model) {
-        String message = "";
+        String message;
         if (bindingResult.hasErrors()) {
             message = "Please fill out all fields!";
             model.addAttribute("message", message);
@@ -45,7 +45,7 @@ public class RegistrationController {
             return "registration";
         }
         userDto.setRoles(Collections.singleton(Role.USER));
-        userService.saveUser(userDto);
+        userRepository.save(converterService.convertToEntity(userDto));
         return "redirect:login";
     }
 }

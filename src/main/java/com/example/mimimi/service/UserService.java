@@ -1,6 +1,7 @@
 package com.example.mimimi.service;
 
 import com.example.mimimi.dto.UserDto;
+import com.example.mimimi.entity.User;
 import com.example.mimimi.repos.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,11 +12,9 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final ConverterService converterService;
 
-    public UserService(UserRepository userRepository, ConverterService converterService) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.converterService = converterService;
     }
 
     @Override
@@ -24,7 +23,7 @@ public class UserService implements UserDetailsService {
                 () -> new UsernameNotFoundException("User Not Found"));
     }
 
-    public void saveUser(UserDto userDto) {
-        userRepository.save(converterService.convertToEntity(userDto));
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 }
